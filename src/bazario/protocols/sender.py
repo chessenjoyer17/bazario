@@ -4,8 +4,4 @@ from bazario.markers import Request
 
 
 class Sender(Protocol):
-    def send[TRes](
-        self,
-        response: Request[TRes],
-        component: str | None = None,
-    ) -> TRes: ...
+    def send[TRes](self, request: Request[TRes]) -> TRes: ...
