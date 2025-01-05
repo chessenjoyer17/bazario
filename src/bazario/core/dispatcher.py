@@ -1,65 +1,47 @@
-from collections.abc import Iterable
-
-from bazario.core.generic_types_extracting import (
-    extract_notification_type_from_handler,
-    extract_request_type_from_handler,
-)
+from bazario.core.aliases import NotificationHandlers, RequestHandlers
+from bazario.core.handler_key import NotificationHandlerKey, RequestHandlerKey
 from bazario.markers import Notification, Request
-from bazario.protocols.handler import NotificationHandler, RequestHandler
-from bazario.protocols.publisher import Publisher
-from bazario.protocols.resolver import Resolver
-from bazario.protocols.sender import Sender
-
-type TRHandlers = dict[type[Request], type[RequestHandler]]
-type TNHandlers = dict[type[Notification], list[type[NotificationHandler]]]
+from bazario.protocols.dispatcher import Dispatcher
 
 
-class Dispatcher(Sender, Publisher):
-    _request_handlers: TRHandlers
-    _notification_handlers: TNHandlers
-
-    def __init__(self, resolver: Resolver) -> None:
-        self._resolver = resolver
-
-        self._request_handlers = {}
-        self._notification_handlers = {}
+class DispatcherImpl(Dispatcher):
+    def __init__(
+        self,
+        request_handlers: RequestHandlers,
+        notification_handlers: NotificationHandlers,
+    ) -> None:
+        self._request_handlers = request_handlers
+        self._notification_handlers = notification_handlers
 
     def send[TRes](self, request: Request[TRes]) -> TRes:
-        handler = self._find_and_resolve_request_handler(request)
+        key = self._find_request_handler_key(request)
+
+        handler = key.resolver.resolve(key.handler)
 
         return handler.handle(request)
 
     def publish(self, notification: Notification) -> None:
-        handlers = self._find_and_resolve_notification_handlers(notification)
+        keys = self._find_notification_handler_keys(notification)
 
-        for handler in handlers:
+        for key in keys:
+            handler = key.resolver.resolve(key.handler)
+
             handler.handle(notification)
 
-    def register_request_handler(self, handler: type[RequestHandler]) -> None:
-        request_type = extract_request_type_from_handler(handler)
-
-        self._request_handlers[request_type] = handler
-
-    def register_notification_handler(self, handler: type[NotificationHandler]) -> None:
-        notification_type = extract_notification_type_from_handler(handler)
-
-        self._notification_handlers.setdefault(notification_type, []).append(handler)
-
-    def _find_and_resolve_request_handler(self, request: Request) -> RequestHandler:
+    def _find_request_handler_key(self, request: Request) -> RequestHandlerKey:
         request_type = type(request)
 
         if request_type not in self._request_handlers:
-            raise ValueError(f"No handler for {request_type}")
+            raise ValueError(f"No request handler for {request_type}")
 
-        return self._resolver.resolve(self._request_handlers[request_type])
+        return self._request_handlers[request_type]
 
-    def _find_and_resolve_notification_handlers(
+    def _find_notification_handler_keys(
         self, notification: Notification
-    ) -> Iterable[NotificationHandler]:
+    ) -> list[NotificationHandlerKey]:
         notification_type = type(notification)
 
         if notification_type not in self._notification_handlers:
-            raise ValueError(f"No handler for {notification_type}")
+            raise ValueError(f"No notification handlers for {notification_type}")
 
-        for handler in self._notification_handlers[notification_type]:
-            yield self._resolver.resolve(handler)
+        return self._notification_handlers[notification_type]

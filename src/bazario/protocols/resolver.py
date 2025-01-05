@@ -1,7 +1,9 @@
-from typing import Protocol, TypeVar
+from typing import Protocol
 
-T = TypeVar("T")
+from bazario.protocols.handler import NotificationHandler, RequestHandler
+
+type HandlerType = RequestHandler | NotificationHandler
 
 
-class Resolver(Protocol):
-    def resolve(self, key: type[T]) -> T: ...
+class HandlerResolver(Protocol):
+    def resolve[T: HandlerType](self, key: type[T]) -> T: ...

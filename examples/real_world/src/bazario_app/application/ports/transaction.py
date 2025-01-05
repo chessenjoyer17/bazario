@@ -1,0 +1,6 @@
+from typing import Protocol
+
+
+class Transaction(Protocol):
+    def commit(self) -> None: ...
+    def rollback(self) -> None: ...
