@@ -20,14 +20,14 @@ from bazario.protocols.finder import (
     RequestHandlerFinder,
 )
 from bazario.protocols.handler import NotificationHandler, RequestHandler
-from bazario.protocols.resolver import HandlerResolver
+from bazario.protocols.resolver import HandlerResolver, T
 
 
 class DishkaHandlerResolver(HandlerResolver):
     def __init__(self, container: Container) -> None:
         self._container = container
 
-    def resolve[T](self, handler_type: type[T]) -> T:
+    def resolve(self, handler_type: type[T]) -> T:
         return self._container.get(handler_type)
 
 
