@@ -2,16 +2,16 @@ from typing import Protocol, TypeVar, runtime_checkable
 
 from bazario.markers import Notification, Request
 
-TRes = TypeVar("TRes", covariant=True)
-TReq = TypeVar("TReq", bound=Request, contravariant=True)
-TNot = TypeVar("TNot", bound=Notification, contravariant=True)
+TRes_co = TypeVar("TRes_co", covariant=True)
+TReq_contra = TypeVar("TReq_contra", bound=Request, contravariant=True)
+TNot_contra = TypeVar("TNot_contra", bound=Notification, contravariant=True)
 
 
 @runtime_checkable
-class RequestHandler(Protocol[TReq, TRes]):
-    def handle(self, request: TReq) -> TRes: ...
+class RequestHandler(Protocol[TReq_contra, TRes_co]):
+    def handle(self, request: TReq_contra) -> TRes_co: ...
 
 
 @runtime_checkable
-class NotificationHandler(Protocol[TNot]):
-    def handle(self, notification: TNot) -> None: ...
+class NotificationHandler(Protocol[TNot_contra]):
+    def handle(self, notification: TNot_contra) -> None: ...

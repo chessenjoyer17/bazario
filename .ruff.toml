@@ -4,10 +4,10 @@ src = ["src"]
 
 include = ["src/**.py", "tests/**.py"]
 
-select = [
+lint.select = [
 "ALL"
 ]
-ignore = [
+lint.ignore = [
    "ARG",
    "ANN",
    "D",
