@@ -1,19 +1,17 @@
-from typing import Protocol
+from typing import Protocol, TypeVar, runtime_checkable
 
 from bazario.markers import Notification, Request
 
+TRes = TypeVar("TRes", covariant=True)
+TReq = TypeVar("TReq", bound=Request, contravariant=True)
+TNot = TypeVar("TNot", bound=Notification, contravariant=True)
 
-class RequestHandler[TReq: Request[TRes], TRes](Protocol):
+
+@runtime_checkable
+class RequestHandler(Protocol[TReq, TRes]):
     def handle(self, request: TReq) -> TRes: ...
 
 
-class AsyncRequestHandler[TReq: Request[TRes], TRes](Protocol):
-    async def handle(self, request: TReq) -> TRes: ...
-
-
-class NotificationHandler[TNot: Notification](Protocol):
+@runtime_checkable
+class NotificationHandler(Protocol[TNot]):
     def handle(self, notification: TNot) -> None: ...
-
-
-class AsyncNotificationHandler[TNot: Notification](Protocol):
-    async def handle(self, notification: TNot) -> None: ...

@@ -1,47 +1,38 @@
-from bazario.core.aliases import NotificationHandlers, RequestHandlers
-from bazario.core.handler_key import NotificationHandlerKey, RequestHandlerKey
+from bazario.core.exceptions import HandlerNotFoundError
 from bazario.markers import Notification, Request
-from bazario.protocols.dispatcher import Dispatcher
+from bazario.protocols.finder import (
+    NotificationHandlerFinder,
+    RequestHandlerFinder,
+)
+from bazario.protocols.publisher import Publisher
+from bazario.protocols.resolver import HandlerResolver
+from bazario.protocols.sender import Sender, TRes
 
 
-class DispatcherImpl(Dispatcher):
+class Dispatcher(Sender, Publisher):
     def __init__(
         self,
-        request_handlers: RequestHandlers,
-        notification_handlers: NotificationHandlers,
+        handler_resolver: HandlerResolver,
+        request_handler_finder: RequestHandlerFinder,
+        notification_handler_finder: NotificationHandlerFinder,
     ) -> None:
-        self._request_handlers = request_handlers
-        self._notification_handlers = notification_handlers
+        self._handler_resolver = handler_resolver
+        self._request_handler_finder = request_handler_finder
+        self._notification_handler_finder = notification_handler_finder
 
-    def send[TRes](self, request: Request[TRes]) -> TRes:
-        key = self._find_request_handler_key(request)
+    def send(self, request: Request[TRes]) -> TRes:
+        handler_type = self._request_handler_finder.find(request)
 
-        handler = key.resolver.resolve(key.handler)
+        if handler_type is None:
+            raise HandlerNotFoundError(type(request))
+
+        handler = self._handler_resolver.resolve(handler_type)
 
         return handler.handle(request)
 
     def publish(self, notification: Notification) -> None:
-        keys = self._find_notification_handler_keys(notification)
+        handler_types = self._notification_handler_finder.find(notification)
 
-        for key in keys:
-            handler = key.resolver.resolve(key.handler)
-
+        for handler_type in handler_types:
+            handler = self._handler_resolver.resolve(handler_type)
             handler.handle(notification)
-
-    def _find_request_handler_key(self, request: Request) -> RequestHandlerKey:
-        request_type = type(request)
-
-        if request_type not in self._request_handlers:
-            raise ValueError(f"No request handler for {request_type}")
-
-        return self._request_handlers[request_type]
-
-    def _find_notification_handler_keys(
-        self, notification: Notification
-    ) -> list[NotificationHandlerKey]:
-        notification_type = type(notification)
-
-        if notification_type not in self._notification_handlers:
-            raise ValueError(f"No notification handlers for {notification_type}")
-
-        return self._notification_handlers[notification_type]

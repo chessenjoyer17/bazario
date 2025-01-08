@@ -1,9 +1,10 @@
-from typing import Protocol
+from typing import Protocol, TypeVar, runtime_checkable
 
-from bazario.protocols.handler import NotificationHandler, RequestHandler
+from bazario.aliases import HandlerType
 
-type HandlerType = RequestHandler | NotificationHandler
+T = TypeVar("T", bound=HandlerType)
 
 
+@runtime_checkable
 class HandlerResolver(Protocol):
-    def resolve[T: HandlerType](self, key: type[T]) -> T: ...
+    def resolve(self, handler_type: type[T]) -> T: ...

@@ -1,4 +1,6 @@
-class Notification: ...
+class Request[TRes]:
+    """Marker interface for requests"""
 
 
-class Request[TRes]: ...
+class Notification:
+    """Marker interface for notifications"""
