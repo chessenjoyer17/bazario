@@ -27,8 +27,8 @@ class DishkaHandlerResolver(HandlerResolver):
     def __init__(self, container: Container) -> None:
         self._container = container
 
-    def resolve[T](self, key: type[T]) -> T:
-        return self._container.get(key)
+    def resolve[T](self, handler_type: type[T]) -> T:
+        return self._container.get(handler_type)
 
 
 class DishkaRequestHandlerFinder(RequestHandlerFinder):
