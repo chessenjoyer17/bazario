@@ -1,4 +1,9 @@
-class Request[TRes]:
+from typing import Generic, TypeVar
+
+TRes = TypeVar("TRes")
+
+
+class Request(Generic[TRes]):
     """Marker interface for requests"""
 
 
