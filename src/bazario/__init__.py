@@ -25,4 +25,4 @@ __all__ = (
 )
 
 __author__ = "Abrekov Alim"
-__version__ = "0.1.0"
+__version__ = "0.0.1"
