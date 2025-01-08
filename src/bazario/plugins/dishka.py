@@ -48,7 +48,7 @@ class DishkaRequestHandlerFinder(RequestHandlerFinder):
             ):
                 return key.type_hint
 
-        raise ValueError
+        return None
 
 
 class DishkaNotificationHandlerFinder(NotificationHandlerFinder):
