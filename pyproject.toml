@@ -10,7 +10,7 @@ where = ["src"]
 
 [project]
 name = "bazario"
-version = "0.0.1"
+version = "0.1.0"
 authors = [{ name = "Alim Abrekov", email = "chessinmind17@yandex.ru" }]
 description = "Lightweight handler routing library for modular apps."
 requires-python = ">=3.10"

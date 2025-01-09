@@ -23,6 +23,3 @@ __all__ = (
     "Sender",
     "THandler",
 )
-
-__author__ = "Abrekov Alim"
-__version__ = "0.0.1"
