@@ -22,7 +22,7 @@ pip install "bazario[dishka]"
 ```
 
 # Examples
-You can find more examples in [this folder](https://github.com/chessenjoyer17/bazario/examples)
+You can find more examples in [this folder](https://github.com/chessenjoyer17/bazario/tree/dev/examples)
 
 ## Create requests with handlers for them
 ``` python
