@@ -11,3 +11,12 @@ class HandlerNotFoundError(Exception):
         super().__init__(
             f"Handler for target '{target_type.__name__}' not found.",
         )
+
+
+class NotificationHandlerNotSetError(Exception):
+    def __init__(self, *args: object) -> None:
+        super().__init__(
+            "Notification handler is not configured. "
+            "Please set a handler before using notifications.",
+            *args,
+        )

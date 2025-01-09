@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from typing import Protocol
 from uuid import UUID, uuid4
 
-from dishka import Container, Provider, Scope, make_container
+from dishka import Container, Provider, Scope, WithParents, make_container
 
 from bazario import (
     Notification,
@@ -12,7 +12,12 @@ from bazario import (
     RequestHandler,
     Sender,
 )
-from bazario.plugins.dishka import bazario_provider
+from bazario.plugins.dishka import (
+    DishkaHandlerResolver,
+    DishkaNotificationHandlerFinder,
+    DishkaRequestHandlerFinder,
+    dispatcher_factory,
+)
 
 
 # domain entities
@@ -106,13 +111,18 @@ class MockLogger:
 
 
 # presentation controllers
-def add_post(sender: Sender, logger: Logger) -> None:
-    request = AddPost(
-        "Sicilian defense it so simple!",
-        "Learning the sicilian defense: Najdorf variation",
-    )
-    sender.send(request)
-    logger.log("Post successfully added")
+class PostController:
+    def __init__(self, sender: Sender, logger: Logger) -> None:
+        self._sender = sender
+        self._logger = logger
+
+    def add_post(self) -> None:
+        request = AddPost(
+            "Sicilian defense it so simple!",
+            "Learn the sicilian defense: Najdorf variation.",
+        )
+        self._sender.send(request)
+        self._logger.log("Post added successfully")
 
 
 # composition root level: entrypoints, bootstrapping, ioc, configs, etc.
@@ -125,19 +135,24 @@ def build_container() -> Container:
         MockTransactionCommiter,
         provides=TransactionCommiter,
     )
-    main_provider.provide_all(AddPostHandler, LogOnPostAddedHandler)
+    main_provider.provide(PostController)
+    main_provider.provide(AddPostHandler)
+    main_provider.provide(LogOnPostAddedHandler)
+    main_provider.provide(WithParents[DishkaHandlerResolver])
+    main_provider.provide(WithParents[DishkaRequestHandlerFinder])
+    main_provider.provide(WithParents[DishkaNotificationHandlerFinder])
+    main_provider.provide(dispatcher_factory)
 
-    return make_container(main_provider, bazario_provider())
+    return make_container(main_provider)
 
 
 def main() -> None:
     container = build_container()
 
     with container() as request_container:
-        sender: Sender = request_container.get(Sender)
-        logger: Logger = request_container.get(Logger)
+        controller = request_container.get(PostController)
 
-        add_post(sender, logger)
+        controller.add_post()
 
     container.close()
 

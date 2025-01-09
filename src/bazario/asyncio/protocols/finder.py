@@ -1,13 +1,16 @@
 from collections.abc import Iterable
 from typing import Protocol, runtime_checkable
 
+from bazario.asyncio.protocols.handler import (
+    NotificationHandler,
+    RequestHandler,
+)
 from bazario.markers import Notification, Request
-from bazario.protocols.handler import NotificationHandler, RequestHandler
 
 
 @runtime_checkable
 class RequestHandlerFinder(Protocol):
-    def find(
+    async def find(
         self,
         request_type: type[Request],
     ) -> type[RequestHandler] | None: ...
@@ -15,7 +18,7 @@ class RequestHandlerFinder(Protocol):
 
 @runtime_checkable
 class NotificationHandlerFinder(Protocol):
-    def find(
+    async def find(
         self,
         notification_type: type[Notification],
     ) -> Iterable[type[NotificationHandler]]: ...

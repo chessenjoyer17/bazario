@@ -6,15 +6,14 @@ __all__ = (
 
 from collections.abc import Iterable
 
-from dishka import Container, WithParents
+from dishka import AsyncContainer, WithParents
 
-from bazario import (
+from bazario import Notification, Request
+from bazario.asyncio import (
     Dispatcher,
     HandlerResolver,
-    Notification,
     NotificationHandler,
     NotificationHandlerFinder,
-    Request,
     RequestHandler,
     RequestHandlerFinder,
     THandler,
@@ -26,25 +25,28 @@ from bazario.type_inspection import (
 
 
 class DishkaHandlerResolver(HandlerResolver):
-    def __init__(self, container: Container) -> None:
+    def __init__(self, container: AsyncContainer) -> None:
         self._container = container
 
-    def resolve(self, handler_type: type[THandler]) -> THandler:
-        return self._container.get(handler_type)
+    async def resolve(self, handler_type: type[THandler]) -> THandler:
+        return await self._container.get(handler_type)
 
 
 class DishkaRequestHandlerFinder(RequestHandlerFinder):
-    def __init__(self, container: Container) -> None:
+    def __init__(self, container: AsyncContainer) -> None:
         self._container = container
 
-    def find(self, request: type[Request]) -> type[RequestHandler] | None:
+    async def find(
+        self,
+        request_type: type[Request],
+    ) -> type[RequestHandler] | None:
         for key in self._container.registry.factories:
             generic_type = extract_base_generic_type(key.type_hint)
 
             if generic_type and matches_generic_type(
                 generic_type,
                 RequestHandler,
-                request,
+                request_type,
             ):
                 return key.type_hint
 
@@ -52,22 +54,25 @@ class DishkaRequestHandlerFinder(RequestHandlerFinder):
 
 
 class DishkaNotificationHandlerFinder(NotificationHandlerFinder):
-    def __init__(self, container: Container) -> None:
+    def __init__(self, container: AsyncContainer) -> None:
         self._container = container
 
-    def find(
+    async def find(
         self,
-        notification: type[Notification],
+        notification_type: type[Notification],
     ) -> Iterable[type[NotificationHandler]]:
+        handlers_types = []
         for key in self._container.registry.factories:
             generic_type = extract_base_generic_type(key.type_hint)
 
             if generic_type and matches_generic_type(
                 generic_type,
                 NotificationHandler,
-                notification,
+                notification_type,
             ):
-                yield key.type_hint
+                handlers_types.append(key.type_hint)
+
+        return handlers_types
 
 
 def dispatcher_factory(
