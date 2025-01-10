@@ -1,31 +1,25 @@
-from bazario.asyncio.protocols.finder import (
-    NotificationHandlerFinder,
-    RequestHandlerFinder,
-)
+from bazario.asyncio.protocols.finder import HandlerFinder
 from bazario.asyncio.protocols.publisher import Publisher
 from bazario.asyncio.protocols.resolver import HandlerResolver
 from bazario.asyncio.protocols.sender import Sender, TRes
-from bazario.exceptions import (
-    HandlerNotFoundError,
-    NotificationHandlerNotSetError,
-)
+from bazario.exceptions import HandlerNotFoundError
 from bazario.markers import Notification, Request
 
 
 class Dispatcher(Sender, Publisher):
     def __init__(
         self,
+        handler_finder: HandlerFinder,
         handler_resolver: HandlerResolver,
-        request_handler_finder: RequestHandlerFinder,
-        notification_handler_finder: NotificationHandlerFinder | None = None,
     ) -> None:
+        self._handler_finder = handler_finder
         self._handler_resolver = handler_resolver
-        self._request_handler_finder = request_handler_finder
-        self._notification_handler_finder = notification_handler_finder
 
     async def send(self, request: Request[TRes]) -> TRes:
         request_type = type(request)
-        handler_type = await self._request_handler_finder.find(request_type)
+        handler_type = await self._handler_finder.find_with_request(
+            request_type,
+        )
 
         if handler_type is None:
             raise HandlerNotFoundError(request_type)
@@ -35,11 +29,8 @@ class Dispatcher(Sender, Publisher):
         return await handler.handle(request)
 
     async def publish(self, notification: Notification) -> None:
-        if self._notification_handler_finder is None:
-            raise NotificationHandlerNotSetError
-
         notification_type = type(notification)
-        handler_types = await self._notification_handler_finder.find(
+        handler_types = await self._handler_finder.find_with_notification(
             notification_type,
         )
 

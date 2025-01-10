@@ -10,12 +10,7 @@ from bazario import (
     Request,
     RequestHandler,
 )
-from bazario.plugins.dishka import (
-    DishkaHandlerResolver,
-    DishkaNotificationHandlerFinder,
-    DishkaRequestHandlerFinder,
-    dispatcher_factory,
-)
+from bazario.plugins.dishka import DishkaHandlerFinder, DishkaHandlerResolver
 
 REQUEST_DATA = "King's indian attack. The best opening for white!"
 NOTIFICATION_DATA = (
@@ -52,10 +47,9 @@ def container() -> Container:
 
     provider.provide(MockRequestHandler)
     provider.provide(MockNotificationHandler)
+    provider.provide(WithParents[Dispatcher])
+    provider.provide(WithParents[DishkaHandlerFinder])
     provider.provide(WithParents[DishkaHandlerResolver])
-    provider.provide(WithParents[DishkaRequestHandlerFinder])
-    provider.provide(WithParents[DishkaNotificationHandlerFinder])
-    provider.provide(dispatcher_factory)
 
     return make_container(provider)
 
@@ -76,15 +70,8 @@ def mock_notification_handler(container: Container) -> MockNotificationHandler:
 
 
 @pytest.fixture
-def request_handler_finder(container: Container) -> DishkaRequestHandlerFinder:
-    return container.get(DishkaRequestHandlerFinder)
-
-
-@pytest.fixture
-def notification_handler_finder(
-    container: Container,
-) -> DishkaNotificationHandlerFinder:
-    return container.get(DishkaNotificationHandlerFinder)
+def handler_finder(container: Container) -> DishkaHandlerFinder:
+    return container.get(DishkaHandlerFinder)
 
 
 def test_dishka_resolver(resolver: DishkaHandlerResolver) -> None:
@@ -92,18 +79,18 @@ def test_dishka_resolver(resolver: DishkaHandlerResolver) -> None:
     assert isinstance(handler, MockRequestHandler)
 
 
-def test_dishka_request_handler_finder(
-    request_handler_finder: DishkaRequestHandlerFinder,
+def test_dishka_handler_finder_with_request(
+    handler_finder: DishkaHandlerFinder,
 ) -> None:
-    handler_type = request_handler_finder.find(MockRequest)
+    handler_type = handler_finder.find_with_request(MockRequest)
 
     assert handler_type is MockRequestHandler
 
 
-def test_dishka_notification_handler_finder(
-    notification_handler_finder: DishkaNotificationHandlerFinder,
+def test_dishka_handler_finder_with_notification(
+    handler_finder: DishkaHandlerFinder,
 ) -> None:
-    handler_types = notification_handler_finder.find(MockNotification)
+    handler_types = handler_finder.find_with_notification(MockNotification)
     assert next(iter(handler_types)) is MockNotificationHandler
 
 

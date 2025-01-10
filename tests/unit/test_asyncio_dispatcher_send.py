@@ -14,14 +14,14 @@ async def test_send_success() -> None:
     resolver = AsyncMock()
     resolver.resolve.return_value = handler
     finder = AsyncMock()
-    finder.find.return_value = "handler_type"
+    finder.find_with_request.return_value = "handler_type"
 
-    dispatcher = Dispatcher(resolver, finder)
+    dispatcher = Dispatcher(finder, resolver)
     request = AsyncMock(spec=Request)
 
     result = await dispatcher.send(request)
 
-    finder.find.assert_awaited_once_with(type(request))
+    finder.find_with_request.assert_awaited_once_with(type(request))
     resolver.resolve.assert_awaited_once_with("handler_type")
     handler.handle.assert_awaited_once_with(request)
     assert result == "result"
@@ -31,9 +31,9 @@ async def test_send_success() -> None:
 async def test_send_handler_not_found() -> None:
     resolver = AsyncMock()
     finder = AsyncMock()
-    finder.find.return_value = None
+    finder.find_with_request.return_value = None
 
-    dispatcher = Dispatcher(resolver, finder)
+    dispatcher = Dispatcher(finder, resolver)
     request = AsyncMock(spec=Request)
 
     with pytest.raises(HandlerNotFoundError) as exc_info:

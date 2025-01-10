@@ -12,10 +12,8 @@ from dishka import (
 from bazario import Notification, Request
 from bazario.asyncio import Dispatcher, NotificationHandler, RequestHandler
 from bazario.plugins.asyncio_dishka import (
+    DishkaHandlerFinder,
     DishkaHandlerResolver,
-    DishkaNotificationHandlerFinder,
-    DishkaRequestHandlerFinder,
-    dispatcher_factory,
 )
 
 REQUEST_DATA = "King's indian attack. The best opening for white!"
@@ -53,10 +51,9 @@ def container() -> AsyncContainer:
 
     provider.provide(MockRequestHandler)
     provider.provide(MockNotificationHandler)
+    provider.provide(WithParents[Dispatcher])
+    provider.provide(WithParents[DishkaHandlerFinder])
     provider.provide(WithParents[DishkaHandlerResolver])
-    provider.provide(WithParents[DishkaRequestHandlerFinder])
-    provider.provide(WithParents[DishkaNotificationHandlerFinder])
-    provider.provide(dispatcher_factory)
 
     return make_async_container(provider)
 
@@ -79,17 +76,8 @@ async def mock_notification_handler(
 
 
 @pytest.fixture
-async def request_handler_finder(
-    container: AsyncContainer,
-) -> DishkaRequestHandlerFinder:
-    return await container.get(DishkaRequestHandlerFinder)
-
-
-@pytest.fixture
-async def notification_handler_finder(
-    container: AsyncContainer,
-) -> DishkaNotificationHandlerFinder:
-    return await container.get(DishkaNotificationHandlerFinder)
+async def handler_finder(container: AsyncContainer) -> DishkaHandlerFinder:
+    return await container.get(DishkaHandlerFinder)
 
 
 @pytest.mark.asyncio
@@ -99,19 +87,21 @@ async def test_dishka_resolver(resolver: DishkaHandlerResolver) -> None:
 
 
 @pytest.mark.asyncio
-async def test_dishka_request_handler_finder(
-    request_handler_finder: DishkaRequestHandlerFinder,
+async def test_dishka_handler_finder_with_request(
+    handler_finder: DishkaHandlerFinder,
 ) -> None:
-    handler_type = await request_handler_finder.find(MockRequest)
+    handler_type = await handler_finder.find_with_request(MockRequest)
 
     assert handler_type is MockRequestHandler
 
 
 @pytest.mark.asyncio
-async def test_dishka_notification_handler_finder(
-    notification_handler_finder: DishkaNotificationHandlerFinder,
+async def test_dishka_handler_finder_with_notification(
+    handler_finder: DishkaHandlerFinder,
 ) -> None:
-    handler_types = await notification_handler_finder.find(MockNotification)
+    handler_types = await handler_finder.find_with_notification(
+        MockNotification,
+    )
     assert next(iter(handler_types)) is MockNotificationHandler
 
 

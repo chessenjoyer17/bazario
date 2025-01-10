@@ -63,10 +63,10 @@ class AddPostHandler(RequestHandler[AddPost, int]):
 ```
 ## Choose DI framework plugin
 ``` python
+from bazario import Dispatcher
 from bazario.plugins.dishka import (
-    DishkaHandlerResolver, 
-    DishkaRequestHandlerFinder, 
-    DishkaNotificationHandlerFinder,
+    DishkaHandlerFinder,
+    DishkaHandlerResolver,
 )
 from dishka import Provider, Scope, make_container
 
@@ -75,10 +75,9 @@ def build_container() -> Container:
     main_provider = Provider(scope=Scope.REQUEST)
 
     main_provider.provide(AddPostHandler)
-    main_provider.provide(dispatcher_factory)
+    main_provider.provide(WithParents[Dispatcher])
+    main_provider.provide(WithParents[DishkaHandlerFinder])
     main_provider.provide(WithParents[DishkaHandlerResolver])
-    main_provider.provide(WithParents[DishkaRequestHandlerFinder])
-    main_provider.provide(WithParents[DishkaNotificationHandlerFinder])
     # other registrations like PostRepository, TransactionCommiter, etc.
 
     return make_container(main_provider)
@@ -168,7 +167,7 @@ class AddPostHandler(RequestHandler[AddPost, int]):
             user_id=user_id,
         ))
         # Post first added: post_id=1,  user_id=2
-        # Post second added: post_id=1,  username=2
+        # Post second added: post_id=1,  user_id=2
         self._transaction_commiter.commit()
 
         return new_post.id
@@ -184,7 +183,7 @@ I reviewed existing alternatives and found several issues that **Bazario** solve
   **Bazario** allows the client to control the IoC container and scope creation, giving full control over the container’s lifecycle and preventing performance issues or side effects caused by redundant container instances.
 
 - **Code duplication when registering handlers**: In many libraries, handlers need to be registered both in the library’s object and in the IoC container, which results in code duplication.  
-  **Bazario** eliminates this duplication by ensuring that handlers are registered directly in the DI container, making the code cleaner and easier to maintain, and reducing unnecessary configuration.
+  **Bazario** eliminates this duplication by ensuring that handlers are registered directly in the IoC container, making the code cleaner and easier to maintain, and reducing unnecessary configuration.
 
 - **Lack of modularity**: In other libraries, integrating different DI frameworks is challenging without rewriting significant portions of the logic.  
   **Bazario** solves this problem by utilizing a modular plugin system, allowing easy integration with any DI framework. This provides the ability to use **Bazario** in different environments without being tied to a specific DI framework.

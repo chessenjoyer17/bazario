@@ -5,6 +5,7 @@ from uuid import UUID, uuid4
 from dishka import Container, Provider, Scope, WithParents, make_container
 
 from bazario import (
+    Dispatcher,
     Notification,
     NotificationHandler,
     Publisher,
@@ -12,12 +13,7 @@ from bazario import (
     RequestHandler,
     Sender,
 )
-from bazario.plugins.dishka import (
-    DishkaHandlerResolver,
-    DishkaNotificationHandlerFinder,
-    DishkaRequestHandlerFinder,
-    dispatcher_factory,
-)
+from bazario.plugins.dishka import DishkaHandlerFinder, DishkaHandlerResolver
 
 
 # domain entities
@@ -138,10 +134,9 @@ def build_container() -> Container:
     main_provider.provide(PostController)
     main_provider.provide(AddPostHandler)
     main_provider.provide(LogOnPostAddedHandler)
+    main_provider.provide(WithParents[Dispatcher])
+    main_provider.provide(WithParents[DishkaHandlerFinder])
     main_provider.provide(WithParents[DishkaHandlerResolver])
-    main_provider.provide(WithParents[DishkaRequestHandlerFinder])
-    main_provider.provide(WithParents[DishkaNotificationHandlerFinder])
-    main_provider.provide(dispatcher_factory)
 
     return make_container(main_provider)
 
