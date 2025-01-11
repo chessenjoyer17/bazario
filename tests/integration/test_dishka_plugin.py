@@ -7,7 +7,7 @@ from bazario import (
     Dispatcher,
     Notification,
     NotificationHandler,
-    PipelineBehaviourRegistry,
+    PipelineBehaviorRegistry,
     Request,
     RequestHandler,
 )
@@ -48,7 +48,7 @@ def container() -> Container:
 
     provider.provide(MockRequestHandler)
     provider.provide(MockNotificationHandler)
-    provider.provide(PipelineBehaviourRegistry)
+    provider.provide(PipelineBehaviorRegistry)
     provider.provide(WithParents[Dispatcher])
     provider.provide(WithParents[DishkaResolver])
     provider.provide(WithParents[DishkaHandlerFinder])

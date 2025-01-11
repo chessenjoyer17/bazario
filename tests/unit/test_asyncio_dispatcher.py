@@ -8,8 +8,8 @@ from bazario.asyncio import (
     HandleNext,
     HandlerFinder,
     NotificationHandler,
-    PipelineBehaviour,
-    PipelineBehaviourRegistry,
+    PipelineBehavior,
+    PipelineBehaviorRegistry,
     RequestHandler,
     Resolver,
 )
@@ -34,7 +34,7 @@ class DummyNotificationHandler(NotificationHandler[DummyNotification]):
         pass
 
 
-class ValidationBehaviour(PipelineBehaviour[DummyNotification, None]):
+class ValidationBehavior(PipelineBehavior[DummyNotification, None]):
     async def handle(
         self,
         resolver: Resolver,
@@ -47,7 +47,7 @@ class ValidationBehaviour(PipelineBehaviour[DummyNotification, None]):
         await handle_next(resolver, target)
 
 
-class ModifyingBehaviour(PipelineBehaviour[DummyRequest, int]):
+class ModifyingBehavior(PipelineBehavior[DummyRequest, int]):
     async def handle(
         self,
         resolver: Resolver,
@@ -83,9 +83,9 @@ def handler_finder() -> MagicMock:
 
 
 @pytest.fixture
-def pipeline_behaviour_registry() -> MagicMock:
-    mock = MagicMock(spec=PipelineBehaviourRegistry)
-    mock.get_behaviours.return_value = []
+def pipeline_behavior_registry() -> MagicMock:
+    mock = MagicMock(spec=PipelineBehaviorRegistry)
+    mock.get_behaviors.return_value = []
     return mock
 
 
@@ -93,9 +93,9 @@ def pipeline_behaviour_registry() -> MagicMock:
 def dispatcher(
     resolver: AsyncMock,
     handler_finder: MagicMock,
-    pipeline_behaviour_registry: MagicMock,
+    pipeline_behavior_registry: MagicMock,
 ) -> Dispatcher:
-    return Dispatcher(resolver, handler_finder, pipeline_behaviour_registry)
+    return Dispatcher(resolver, handler_finder, pipeline_behavior_registry)
 
 
 @pytest.mark.asyncio
@@ -147,15 +147,15 @@ async def test_publish_notification_no_handlers(
 
 
 @pytest.mark.asyncio
-async def test_pipeline_behaviours_for_request(
+async def test_pipeline_behaviors_for_request(
     dispatcher: Dispatcher,
     resolver: AsyncMock,
-    pipeline_behaviour_registry: MagicMock,
+    pipeline_behavior_registry: MagicMock,
 ) -> None:
     request = DummyRequest()
 
-    behaviours = [ModifyingBehaviour()]
-    pipeline_behaviour_registry.get_behaviours.return_value = behaviours
+    behaviors = [ModifyingBehavior()]
+    pipeline_behavior_registry.get_behaviors.return_value = behaviors
 
     result = await dispatcher.send(request)
 
@@ -164,15 +164,15 @@ async def test_pipeline_behaviours_for_request(
 
 
 @pytest.mark.asyncio
-async def test_pipeline_behaviours_for_notification(
+async def test_pipeline_behaviors_for_notification(
     dispatcher: Dispatcher,
     resolver: AsyncMock,
-    pipeline_behaviour_registry: MagicMock,
+    pipeline_behavior_registry: MagicMock,
 ) -> None:
     notification = DummyNotification()
 
-    behaviours = [ValidationBehaviour()]
-    pipeline_behaviour_registry.get_behaviours.return_value = behaviours
+    behaviors = [ValidationBehavior()]
+    pipeline_behavior_registry.get_behaviors.return_value = behaviors
 
     await dispatcher.publish(notification)
 

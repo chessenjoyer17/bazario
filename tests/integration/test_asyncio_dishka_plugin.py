@@ -13,7 +13,7 @@ from bazario import Notification, Request
 from bazario.asyncio import (
     Dispatcher,
     NotificationHandler,
-    PipelineBehaviourRegistry,
+    PipelineBehaviorRegistry,
     RequestHandler,
 )
 from bazario.plugins.asyncio_dishka import DishkaHandlerFinder, DishkaResolver
@@ -53,7 +53,7 @@ def container() -> AsyncContainer:
 
     provider.provide(MockRequestHandler)
     provider.provide(MockNotificationHandler)
-    provider.provide(PipelineBehaviourRegistry)
+    provider.provide(PipelineBehaviorRegistry)
     provider.provide(WithParents[Dispatcher])
     provider.provide(WithParents[DishkaResolver])
     provider.provide(WithParents[DishkaHandlerFinder])
