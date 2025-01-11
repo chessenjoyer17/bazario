@@ -1,4 +1,3 @@
-from collections.abc import Callable
 from dataclasses import dataclass
 from typing import Any, Protocol
 from uuid import UUID, uuid4
@@ -7,6 +6,7 @@ from dishka import Container, Provider, Scope, WithParents, make_container
 
 from bazario import (
     Dispatcher,
+    HandleNext,
     Notification,
     NotificationHandler,
     PipelineBehaviour,
@@ -87,12 +87,12 @@ class LogOnPostAddedHandler(NotificationHandler[PostAdded]):
         self._logger.log(message.format(post_id=notification.post_id))
 
 
-class GlobalPipe(PipelineBehaviour[Request, Any]):
+class GlobalPipelineBehaviour(PipelineBehaviour[Request, Any]):
     def handle(
         self,
         resolver: Resolver,
         target: Request,
-        handle_next: Callable[[Resolver, Request], Any],
+        handle_next: HandleNext[Request, Any],
     ) -> Any:
         print("before")
         response = handle_next(resolver, target)
@@ -101,12 +101,12 @@ class GlobalPipe(PipelineBehaviour[Request, Any]):
         return response
 
 
-class AddPostPipe(PipelineBehaviour[AddPost, int]):
+class AddPostPipelineBehaviour(PipelineBehaviour[AddPost, int]):
     def handle(
         self,
         resolver: Resolver,
         target: AddPost,
-        handle_next: Callable[[Resolver, AddPost], int],
+        handle_next: HandleNext[AddPost, int],
     ) -> int:
         logger = resolver.resolve(Logger)
 
@@ -119,12 +119,12 @@ class AddPostPipe(PipelineBehaviour[AddPost, int]):
         return response
 
 
-class PostAddedPipe(PipelineBehaviour[PostAdded, None]):
+class PostAddedPipelineBehaviour(PipelineBehaviour[PostAdded, None]):
     def handle(
         self,
         resolver: Resolver,
         target: PostAdded,
-        handle_next: Callable[[Resolver, PostAdded], int],
+        handle_next: HandleNext[PostAdded, None],
     ) -> int:
         print("before event")
         handle_next(resolver, target)
@@ -171,9 +171,9 @@ class PostController:
 
 def get_pipeline_registry() -> PipelineBehaviourRegistry:
     registry = PipelineBehaviourRegistry()
-    registry.add_behaviours(Request, GlobalPipe())
-    registry.add_behaviours(AddPost, AddPostPipe())
-    registry.add_behaviours(PostAdded, PostAddedPipe())
+    registry.add_behaviours(Request, GlobalPipelineBehaviour())
+    registry.add_behaviours(AddPost, AddPostPipelineBehaviour())
+    registry.add_behaviours(PostAdded, PostAddedPipelineBehaviour())
 
     return registry
 
