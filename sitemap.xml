@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url>
+         <loc>https://chessenjoyer17.github.io/bazario/</loc>
+         <lastmod>2025-01-11</lastmod>
+    </url>
+    <url>
+         <loc>https://chessenjoyer17.github.io/bazario/installation/</loc>
+         <lastmod>2025-01-11</lastmod>
+    </url>
+    <url>
+         <loc>https://chessenjoyer17.github.io/bazario/why-bazario/</loc>
+         <lastmod>2025-01-11</lastmod>
+    </url>
+    <url>
+         <loc>https://chessenjoyer17.github.io/bazario/core-concepts/ioc-integration/</loc>
+         <lastmod>2025-01-11</lastmod>
+    </url>
+    <url>
+         <loc>https://chessenjoyer17.github.io/bazario/core-concepts/notifications-and-events/</loc>
+         <lastmod>2025-01-11</lastmod>
+    </url>
+    <url>
+         <loc>https://chessenjoyer17.github.io/bazario/core-concepts/pipeline-behaviors/</loc>
+         <lastmod>2025-01-11</lastmod>
+    </url>
+    <url>
+         <loc>https://chessenjoyer17.github.io/bazario/core-concepts/requests-and-handlers/</loc>
+         <lastmod>2025-01-11</lastmod>
+    </url>
+</urlset>
