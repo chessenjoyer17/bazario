@@ -1,25 +1,26 @@
+from typing import Any, TypeVar
+
 from bazario.asyncio.protocols.pipeline_behaviour import PipelineBehaviour
-from bazario.typing.type_vars import TRes_co, TTarget_contra
+from bazario.typing.aliases import TargetType
+
+TTarget = TypeVar("TTarget", bound=TargetType)
 
 
 class PipelineBehaviourRegistry:
     def __init__(self) -> None:
-        self._behaviours: dict[
-            type[TTarget_contra],
-            list[PipelineBehaviour[TTarget_contra, TRes_co]],
-        ] = {}
+        self._behaviours: dict[type, list[PipelineBehaviour]] = {}
 
     def add_behaviours(
         self,
-        target_type: type[TTarget_contra],
-        *behaviours: PipelineBehaviour[TTarget_contra, TRes_co],
+        target_type: type[TTarget],
+        *behaviours: PipelineBehaviour[TTarget, Any],
     ) -> None:
         self._behaviours.setdefault(target_type, []).extend(behaviours)
 
     def get_behaviours(
         self,
-        target_type: type[TTarget_contra],
-    ) -> list[PipelineBehaviour[TTarget_contra, TRes_co]]:
+        target_type: type[TTarget],
+    ) -> list[PipelineBehaviour[TTarget, Any]]:
         return [
             behaviour
             for target, behaviours in self._behaviours.items()
