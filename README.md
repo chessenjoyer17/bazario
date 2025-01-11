@@ -73,7 +73,7 @@ class AddPostHandler(RequestHandler[AddPost, int]):
 ### Configuring DI Framework
 This example demonstrates how to configure your dependency injection (DI) framework (Dishka in this case) to work with Bazario:
 ```python
-from bazario import Dispatcher, PipelineBehaviourRegistry
+from bazario import Dispatcher, PipelineBehaviorRegistry
 from bazario.plugins.dishka import (
     DishkaHandlerFinder,
     DishkaHandlerResolver,
@@ -190,7 +190,7 @@ Pipeline behaviors in **Bazario** enable pre- and post-processing logic for requ
 ### Defining Pipeline Behaviors
 ```python
 from bazario import (
-    PipelineBehaviour,
+    PipelineBehavior,
     Resolver,
     HandleNext,
     Request,
@@ -198,7 +198,7 @@ from bazario import (
 )
 
 # Behavior for all requests
-class RequestLoggingBehaviour(PipelineBehaviour[Request, Any]):
+class RequestLoggingBehavior(PipelineBehavior[Request, Any]):
     def handle(
         self,
         resolver: Resolver,
@@ -213,7 +213,7 @@ class RequestLoggingBehaviour(PipelineBehaviour[Request, Any]):
         return response
 
 # Behavior for all notifications
-class NotificationLoggingBehaviour(PipelineBehaviour[Notification, None]):
+class NotificationLoggingBehavior(PipelineBehavior[Notification, None]):
     def handle(
         self,
         resolver: Resolver,
@@ -226,7 +226,7 @@ class NotificationLoggingBehaviour(PipelineBehaviour[Notification, None]):
         logger.log_info("After notification handler execution")
 
 # Behavior specific to AddPost request
-class AddPostLoggingBehaviour(PipelineBehaviour[AddPost, int]):
+class AddPostLoggingBehavior(PipelineBehavior[AddPost, int]):
     def handle(
         self,
         resolver: Resolver,
@@ -241,7 +241,7 @@ class AddPostLoggingBehaviour(PipelineBehaviour[AddPost, int]):
         return response
 
 # Behavior specific to PostAdded notification
-class PostAddedLoggingBehaviour(PipelineBehaviour[PostAdded, None]):
+class PostAddedLoggingBehavior(PipelineBehavior[PostAdded, None]):
     def handle(
         self,
         resolver: Resolver,
@@ -255,22 +255,22 @@ class PostAddedLoggingBehaviour(PipelineBehaviour[PostAdded, None]):
 ```
 
 ### Registering Pipeline Behaviors
-Define the factory function for `PipelineBehaviourRegistry`. The order of behavior registration determines the execution sequence - behaviors are executed in the order they are added:
+Define the factory function for `PipelineBehaviorRegistry`. The order of behavior registration determines the execution sequence - behaviors are executed in the order they are added:
 
 ```python
-from bazario import PipelineBehaviourRegistry
+from bazario import PipelineBehaviorRegistry
 
-def build_registry() -> PipelineBehaviourRegistry:
-    registry = PipelineBehaviourRegistry()
+def build_registry() -> PipelineBehaviorRegistry:
+    registry = PipelineBehaviorRegistry()
     # Behaviors will execute in this order:
-    # 1. RequestLoggingBehaviour
-    # 2. NotificationLoggingBehaviour
-    # 3. AddPostLoggingBehaviour
-    # 4. PostAddedLoggingBehaviour
-    registry.add_behaviours(Request, RequestLoggingBehaviour())
-    registry.add_behaviours(Notification, NotificationLoggingBehaviour())
-    registry.add_behaviours(AddPost, AddPostLoggingBehaviour())
-    registry.add_behaviours(PostAdded, PostAddedLoggingBehaviour())
+    # 1. RequestLoggingBehavior
+    # 2. NotificationLoggingBehavior
+    # 3. AddPostLoggingBehavior
+    # 4. PostAddedLoggingBehavior
+    registry.add_Behaviors(Request, RequestLoggingBehavior())
+    registry.add_Behaviors(Notification, NotificationLoggingBehavior())
+    registry.add_Behaviors(AddPost, AddPostLoggingBehavior())
+    registry.add_Behaviors(PostAdded, PostAddedLoggingBehavior())
 
     return registry
 ```
@@ -283,22 +283,22 @@ The execution order follows these rules:
 
 Example of execution flow for an `AddPost` request:
 ```python
-def build_registry() -> PipelineBehaviourRegistry:
-    registry = PipelineBehaviourRegistry()
+def build_registry() -> PipelineBehaviorRegistry:
+    registry = PipelineBehaviorRegistry()
     
-    registry.add_behaviours(Request, RequestLoggingBehaviour())
-    registry.add_behaviours(
+    registry.add_Behaviors(Request, RequestLoggingBehavior())
+    registry.add_Behaviors(
         AddPost, 
-        ValidationBehaviour(), 
-        MetricsBehaviour(),
+        ValidationBehavior(), 
+        MetricsBehavior(),
     )
 
     return registry
 
 # Execution sequence for AddPost request:
-# 1. RequestLoggingBehaviour
-# 2. ValidationBehaviour
-# 3. MetricsBehaviour
+# 1. RequestLoggingBehavior
+# 2. ValidationBehavior
+# 3. MetricsBehavior
 # 4. Actual AddPost handler
 ```
 
@@ -307,9 +307,9 @@ Configure the IoC container:
 def build_container() -> Container:
     # ...
     main_provider.provide(build_registry)
-    # Note: The Dispatcher depends on PipelineBehaviourRegistry.
-    # If you're not using pipeline behaviors, register PipelineBehaviourRegistry directly:
-    # main_provider.provide(PipelineBehaviourRegistry)
+    # Note: The Dispatcher depends on PipelineBehaviorRegistry.
+    # If you're not using pipeline behaviors, register PipelineBehaviorRegistry directly:
+    # main_provider.provide(PipelineBehaviorRegistry)
     # ...
 ```
 

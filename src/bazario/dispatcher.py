@@ -1,7 +1,7 @@
 from bazario.exceptions import HandlerNotFoundError
 from bazario.markers import Notification, Request
-from bazario.pipeline.behaviour_registry import PipelineBehaviourRegistry
-from bazario.pipeline.wrap_pipeline_behaviours import wrap_pipeline_behaviours
+from bazario.pipeline.behavior_registry import PipelineBehaviorRegistry
+from bazario.pipeline.wrap_pipeline_behaviors import wrap_pipeline_behaviors
 from bazario.protocols.finder import HandlerFinder
 from bazario.protocols.publisher import Publisher
 from bazario.protocols.resolver import Resolver
@@ -13,11 +13,11 @@ class Dispatcher(Sender, Publisher):
         self,
         resolver: Resolver,
         handler_finder: HandlerFinder,
-        pipeline_behaviour_registry: PipelineBehaviourRegistry,
+        pipeline_behavior_registry: PipelineBehaviorRegistry,
     ) -> None:
         self._resolver = resolver
         self._handler_finder = handler_finder
-        self._pipeline_behaviour_registry = pipeline_behaviour_registry
+        self._pipeline_behavior_registry = pipeline_behavior_registry
 
     def send(self, request: Request[TRes]) -> TRes:
         request_type = type(request)
@@ -28,11 +28,11 @@ class Dispatcher(Sender, Publisher):
 
         handler = self._resolver.resolve(handler_type)
 
-        behaviours = self._pipeline_behaviour_registry.get_behaviours(
+        behaviors = self._pipeline_behavior_registry.get_behaviors(
             request_type,
         )
 
-        pipeline = wrap_pipeline_behaviours(behaviours, handler)
+        pipeline = wrap_pipeline_behaviors(behaviors, handler)
 
         return pipeline(self._resolver, request)
 
@@ -41,11 +41,11 @@ class Dispatcher(Sender, Publisher):
         handler_types = self._handler_finder.find_with_notification(
             notification_type,
         )
-        behaviours = self._pipeline_behaviour_registry.get_behaviours(
+        behaviors = self._pipeline_behavior_registry.get_behaviors(
             notification_type,
         )
 
         for handler_type in handler_types:
             handler = self._resolver.resolve(handler_type)
-            pipeline = wrap_pipeline_behaviours(behaviours, handler)
+            pipeline = wrap_pipeline_behaviors(behaviors, handler)
             pipeline(self._resolver, notification)

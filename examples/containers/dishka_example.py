@@ -9,8 +9,8 @@ from bazario import (
     HandleNext,
     Notification,
     NotificationHandler,
-    PipelineBehaviour,
-    PipelineBehaviourRegistry,
+    PipelineBehavior,
+    PipelineBehaviorRegistry,
     Publisher,
     Request,
     RequestHandler,
@@ -87,7 +87,7 @@ class LogOnPostAddedHandler(NotificationHandler[PostAdded]):
         self._logger.log(message.format(post_id=notification.post_id))
 
 
-class GlobalPipelineBehaviour(PipelineBehaviour[Request, Any]):
+class GlobalPipelineBehavior(PipelineBehavior[Request, Any]):
     def handle(
         self,
         resolver: Resolver,
@@ -101,7 +101,7 @@ class GlobalPipelineBehaviour(PipelineBehaviour[Request, Any]):
         return response
 
 
-class AddPostPipelineBehaviour(PipelineBehaviour[AddPost, int]):
+class AddPostPipelineBehavior(PipelineBehavior[AddPost, int]):
     def handle(
         self,
         resolver: Resolver,
@@ -119,7 +119,7 @@ class AddPostPipelineBehaviour(PipelineBehaviour[AddPost, int]):
         return response
 
 
-class PostAddedPipelineBehaviour(PipelineBehaviour[PostAdded, None]):
+class PostAddedPipelineBehavior(PipelineBehavior[PostAdded, None]):
     def handle(
         self,
         resolver: Resolver,
@@ -169,11 +169,11 @@ class PostController:
         self._logger.log("Post added successfully")
 
 
-def get_pipeline_registry() -> PipelineBehaviourRegistry:
-    registry = PipelineBehaviourRegistry()
-    registry.add_behaviours(Request, GlobalPipelineBehaviour())
-    registry.add_behaviours(AddPost, AddPostPipelineBehaviour())
-    registry.add_behaviours(PostAdded, PostAddedPipelineBehaviour())
+def get_pipeline_registry() -> PipelineBehaviorRegistry:
+    registry = PipelineBehaviorRegistry()
+    registry.add_behaviors(Request, GlobalPipelineBehavior())
+    registry.add_behaviors(AddPost, AddPostPipelineBehavior())
+    registry.add_behaviors(PostAdded, PostAddedPipelineBehavior())
 
     return registry
 

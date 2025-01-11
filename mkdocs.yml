@@ -1,0 +1,56 @@
+site_name: "Bazario"
+site_description: Bazario is a lightweight handler routing library designed for modular applications.
+site_url: https://chessenjoyer17.github.io/bazario/
+
+theme:
+  name: "material"
+  features:
+    - navigation.instant
+  palette:
+    - scheme: "default"
+      primary: "red"
+      accent: "amber"
+      media: "(prefers-color-scheme: light)"
+      toggle:
+        icon: "material/weather-night"
+        name: "Switch to dark mode"
+    - scheme: "slate"
+      primary: "red"
+      accent: "amber"
+      media: "(prefers-color-scheme: dark)"
+      toggle:
+        icon: "material/weather-sunny"
+        name: "Switch to light mode"
+
+repo_name: chessenjoyer17/bazario
+repo_url: https://github.com/chessenjoyer17/bazario
+
+nav:
+  - Introduction: index.md
+  - Installation: installation.md
+  - Core concepts:
+    - Requests and handlers: core-concepts/requests-and-handlers.md
+    - Notifications and events: core-concepts/notifications-and-events.md
+    - Pipeline Behaviors: core-concepts/pipeline-behaviors.md
+    - Ioc integration: core-concepts/ioc-integration.md
+  - Why bazario?: why-bazario.md
+
+markdown_extensions:
+  - admonition
+  - pymdownx.highlight
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - attr_list
+  - md_in_html
+
+plugins:
+  - mkdocstrings
+  - search:

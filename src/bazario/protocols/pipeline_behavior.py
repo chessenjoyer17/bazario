@@ -1,15 +1,15 @@
 from typing import Protocol, TypeVar
 
-from bazario.asyncio.protocols.handle_next import HandleNext
-from bazario.asyncio.protocols.resolver import Resolver
+from bazario.protocols.handle_next import HandleNext
+from bazario.protocols.resolver import Resolver
 from bazario.typing.aliases import TargetType
 
-TTarget = TypeVar("TTarget", bound=TargetType)
 TRes = TypeVar("TRes")
+TTarget = TypeVar("TTarget", bound=TargetType)
 
 
-class PipelineBehaviour(Protocol[TTarget, TRes]):
-    async def handle(
+class PipelineBehavior(Protocol[TTarget, TRes]):
+    def handle(
         self,
         resolver: Resolver,
         target: TTarget,
