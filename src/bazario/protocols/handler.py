@@ -1,10 +1,6 @@
-from typing import Protocol, TypeVar, runtime_checkable
+from typing import Protocol, runtime_checkable
 
-from bazario.markers import Notification, Request
-
-TRes_co = TypeVar("TRes_co", covariant=True)
-TReq_contra = TypeVar("TReq_contra", bound=Request, contravariant=True)
-TNot_contra = TypeVar("TNot_contra", bound=Notification, contravariant=True)
+from bazario.typing.type_vars import TNot_contra, TReq_contra, TRes_co
 
 
 @runtime_checkable

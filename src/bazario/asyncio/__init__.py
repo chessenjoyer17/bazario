@@ -1,21 +1,27 @@
 from bazario.asyncio.dispatcher import Dispatcher
+from bazario.asyncio.pipeline.behaviour_registry import (
+    PipelineBehaviourRegistry,
+)
 from bazario.asyncio.protocols.finder import HandlerFinder
+from bazario.asyncio.protocols.handle_next import HandleNext
 from bazario.asyncio.protocols.handler import (
     NotificationHandler,
     RequestHandler,
 )
+from bazario.asyncio.protocols.pipeline_behaviour import PipelineBehaviour
 from bazario.asyncio.protocols.publisher import Publisher
-from bazario.asyncio.protocols.resolver import HandlerResolver
+from bazario.asyncio.protocols.resolver import Resolver
 from bazario.asyncio.protocols.sender import Sender
-from bazario.asyncio.type_vars import THandler
 
 __all__ = (
     "Dispatcher",
+    "HandleNext",
     "HandlerFinder",
-    "HandlerResolver",
     "NotificationHandler",
+    "PipelineBehaviour",
+    "PipelineBehaviourRegistry",
     "Publisher",
     "RequestHandler",
+    "Resolver",
     "Sender",
-    "THandler",
 )

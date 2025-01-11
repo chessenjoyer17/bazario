@@ -10,11 +10,13 @@ from dishka import (
 )
 
 from bazario import Notification, Request
-from bazario.asyncio import Dispatcher, NotificationHandler, RequestHandler
-from bazario.plugins.asyncio_dishka import (
-    DishkaHandlerFinder,
-    DishkaHandlerResolver,
+from bazario.asyncio import (
+    Dispatcher,
+    NotificationHandler,
+    PipelineBehaviourRegistry,
+    RequestHandler,
 )
+from bazario.plugins.asyncio_dishka import DishkaHandlerFinder, DishkaResolver
 
 REQUEST_DATA = "King's indian attack. The best opening for white!"
 NOTIFICATION_DATA = (
@@ -51,16 +53,17 @@ def container() -> AsyncContainer:
 
     provider.provide(MockRequestHandler)
     provider.provide(MockNotificationHandler)
+    provider.provide(PipelineBehaviourRegistry)
     provider.provide(WithParents[Dispatcher])
+    provider.provide(WithParents[DishkaResolver])
     provider.provide(WithParents[DishkaHandlerFinder])
-    provider.provide(WithParents[DishkaHandlerResolver])
 
     return make_async_container(provider)
 
 
 @pytest.fixture
-async def resolver(container: AsyncContainer) -> DishkaHandlerResolver:
-    return await container.get(DishkaHandlerResolver)
+async def resolver(container: AsyncContainer) -> DishkaResolver:
+    return await container.get(DishkaResolver)
 
 
 @pytest.fixture
@@ -81,7 +84,7 @@ async def handler_finder(container: AsyncContainer) -> DishkaHandlerFinder:
 
 
 @pytest.mark.asyncio
-async def test_dishka_resolver(resolver: DishkaHandlerResolver) -> None:
+async def test_dishka_resolver(resolver: DishkaResolver) -> None:
     handler = await resolver.resolve(MockRequestHandler)
     assert isinstance(handler, MockRequestHandler)
 

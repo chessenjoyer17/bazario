@@ -1,5 +1,6 @@
+from collections.abc import Callable
 from dataclasses import dataclass
-from typing import Protocol
+from typing import Any, Protocol
 from uuid import UUID, uuid4
 
 from dishka import Container, Provider, Scope, WithParents, make_container
@@ -8,12 +9,15 @@ from bazario import (
     Dispatcher,
     Notification,
     NotificationHandler,
+    PipelineBehaviour,
+    PipelineBehaviourRegistry,
     Publisher,
     Request,
     RequestHandler,
+    Resolver,
     Sender,
 )
-from bazario.plugins.dishka import DishkaHandlerFinder, DishkaHandlerResolver
+from bazario.plugins.dishka import DishkaHandlerFinder, DishkaResolver
 
 
 # domain entities
@@ -83,6 +87,50 @@ class LogOnPostAddedHandler(NotificationHandler[PostAdded]):
         self._logger.log(message.format(post_id=notification.post_id))
 
 
+class GlobalPipe(PipelineBehaviour[Request, Any]):
+    def handle(
+        self,
+        resolver: Resolver,
+        target: Request,
+        handle_next: Callable[[Resolver, Request], Any],
+    ) -> Any:
+        print("before")
+        response = handle_next(resolver, target)
+        print("after")
+
+        return response
+
+
+class AddPostPipe(PipelineBehaviour[AddPost, int]):
+    def handle(
+        self,
+        resolver: Resolver,
+        target: AddPost,
+        handle_next: Callable[[Resolver, AddPost], int],
+    ) -> int:
+        logger = resolver.resolve(Logger)
+
+        logger.log("Before adding post")
+
+        response = handle_next(resolver, target)
+
+        logger.log("After adding")
+
+        return response
+
+
+class PostAddedPipe(PipelineBehaviour[PostAdded, None]):
+    def handle(
+        self,
+        resolver: Resolver,
+        target: PostAdded,
+        handle_next: Callable[[Resolver, PostAdded], int],
+    ) -> int:
+        print("before event")
+        handle_next(resolver, target)
+        print("after event")
+
+
 # infrastructure adapters
 class MockPostRepository:
     def __init__(self, logger: Logger) -> None:
@@ -121,6 +169,15 @@ class PostController:
         self._logger.log("Post added successfully")
 
 
+def get_pipeline_registry() -> PipelineBehaviourRegistry:
+    registry = PipelineBehaviourRegistry()
+    registry.add_behaviours(Request, GlobalPipe())
+    registry.add_behaviours(AddPost, AddPostPipe())
+    registry.add_behaviours(PostAdded, PostAddedPipe())
+
+    return registry
+
+
 # composition root level: entrypoints, bootstrapping, ioc, configs, etc.
 def build_container() -> Container:
     main_provider = Provider(scope=Scope.REQUEST)
@@ -134,9 +191,10 @@ def build_container() -> Container:
     main_provider.provide(PostController)
     main_provider.provide(AddPostHandler)
     main_provider.provide(LogOnPostAddedHandler)
+    main_provider.provide(get_pipeline_registry)
     main_provider.provide(WithParents[Dispatcher])
+    main_provider.provide(WithParents[DishkaResolver])
     main_provider.provide(WithParents[DishkaHandlerFinder])
-    main_provider.provide(WithParents[DishkaHandlerResolver])
 
     return make_container(main_provider)
 

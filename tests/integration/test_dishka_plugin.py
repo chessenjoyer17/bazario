@@ -7,10 +7,11 @@ from bazario import (
     Dispatcher,
     Notification,
     NotificationHandler,
+    PipelineBehaviourRegistry,
     Request,
     RequestHandler,
 )
-from bazario.plugins.dishka import DishkaHandlerFinder, DishkaHandlerResolver
+from bazario.plugins.dishka import DishkaHandlerFinder, DishkaResolver
 
 REQUEST_DATA = "King's indian attack. The best opening for white!"
 NOTIFICATION_DATA = (
@@ -47,16 +48,17 @@ def container() -> Container:
 
     provider.provide(MockRequestHandler)
     provider.provide(MockNotificationHandler)
+    provider.provide(PipelineBehaviourRegistry)
     provider.provide(WithParents[Dispatcher])
+    provider.provide(WithParents[DishkaResolver])
     provider.provide(WithParents[DishkaHandlerFinder])
-    provider.provide(WithParents[DishkaHandlerResolver])
 
     return make_container(provider)
 
 
 @pytest.fixture
-def resolver(container: Container) -> DishkaHandlerResolver:
-    return container.get(DishkaHandlerResolver)
+def resolver(container: Container) -> DishkaResolver:
+    return container.get(DishkaResolver)
 
 
 @pytest.fixture
@@ -74,7 +76,7 @@ def handler_finder(container: Container) -> DishkaHandlerFinder:
     return container.get(DishkaHandlerFinder)
 
 
-def test_dishka_resolver(resolver: DishkaHandlerResolver) -> None:
+def test_dishka_resolver(resolver: DishkaResolver) -> None:
     handler = resolver.resolve(MockRequestHandler)
     assert isinstance(handler, MockRequestHandler)
 

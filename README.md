@@ -1,40 +1,48 @@
-**Bazario** is a lightweight handler routing library designed for modular applications, utilizing the CQRS (Command and Query Responsibility Segregation) pattern. It simplifies development by providing centralized handling of requests (Requests) and events (Notifications), with efficient handler routing and support for both synchronous and asynchronous operations.
+# Bazario
 
-### Key Features:
-- **Requests**: A simplified mechanism for handling requests (Requests) with clear separation of responsibilities.
-- **Event Handling**: Event publication and handling (Notifications) for both synchronous and asynchronous communication between components.
-- **Modular Architecture**: Clear separation of business logic, ports, and infrastructure, simplifying development and maintenance.
-- **Integration with DI Containers**: Supports DI frameworks like Dishka, enabling easy dependency management and modular configuration.
-- **Testability**: Protocols (Protocol) are used to easily mock infrastructure adapters for unit testing.
-- **Support for Asynchronous Handlers**: **Bazario** includes an **asyncio** package, allowing for asynchronous handling, providing flexibility for applications requiring async logic.
-- **Dependency Separation**: Controllers no longer need to resolve handlers themselves. They simply parse the request, and **Bazario** handles the processing and routing. This improves responsibility separation and makes controller code cleaner and more maintainable.
+**Bazario** is a lightweight handler routing library designed for modular applications, implementing the CQRS (Command and Query Responsibility Segregation) pattern. It simplifies development by providing centralized handling of requests (Requests) and events (Notifications), with efficient handler routing and support for both synchronous and asynchronous operations.
 
-Bazario is optimized for synchronous in-memory processing and handler routing, making it an ideal choice for applications that require modularity, simplicity, and flexible handler management.
+### Key Features
+- **Request Handling**: A streamlined mechanism for handling requests with clear separation of responsibilities
+- **Event Handling**: Unified event publication and handling (Notifications) supporting both standard and async/await syntax while maintaining efficient in-memory processing
+- **Modular Architecture**: Clear separation of business logic, ports, and infrastructure, simplifying development and maintenance
+- **IoC Container Integration**: Support for DI frameworks like Dishka, enabling easy dependency management and modular configuration
+- **Testability**: Use of protocols (Protocol) to easily mock infrastructure adapters for unit testing
+- **Asynchronous Support**: The **asyncio** package enables asynchronous handling, providing flexibility for applications requiring async logic
+- **Dependency Separation**: Controllers delegate handler resolution to **Bazario**, focusing solely on request parsing. This improves separation of responsibilities and enhances code maintainability
+- **Pipeline Behaviors**: Flexible middleware system for implementing cross-cutting concerns like logging, validation, and error handling without modifying handler logic
+- **Configurable Processing Chain**: Ability to create custom processing pipelines for both requests and notifications, enabling sophisticated pre- and post-processing workflows
 
-# Installation
-Bazario is available on pypi: https://pypi.org/project/bazario/
-``` shell
+Bazario is optimized for synchronous in-memory processing and handler routing, making it ideal for applications requiring modularity, simplicity, and flexible handler management.
+
+## Installation
+Bazario is available on PyPI: https://pypi.org/project/bazario/
+```shell
 pip install bazario
 ```
-also you can install bazario with di provider, for an example:
-``` shell
+
+To install Bazario with a DI provider:
+```shell
 pip install "bazario[dishka]"
 ```
 
-# Examples
-You can find more examples in [this folder](https://github.com/chessenjoyer17/bazario/tree/dev/examples)
+## Examples
+Find more examples in the [examples folder](https://github.com/chessenjoyer17/bazario/tree/dev/examples)
 
-## Create requests with handlers for them
-``` python
+### Requests and Request Handlers
+
+**Requests** in Bazario represent actions that return a result. They are used to perform operations that require a return value, such as creating, reading, or updating data.
+
+**Request Handlers** are responsible for processing requests and generating the corresponding results.
+
+Here's an example of defining a request and its handler:
+```python
 from bazario import Request, RequestHandler
-# ... other imports
-
 
 @dataclass(frozen=True)
 class AddPost(Request[int]):
     title: str
     content: str
-
 
 class AddPostHandler(RequestHandler[AddPost, int]):
     def __init__(
@@ -61,15 +69,16 @@ class AddPostHandler(RequestHandler[AddPost, int]):
 
         return new_post.id
 ```
-## Choose DI framework plugin
-``` python
-from bazario import Dispatcher
+
+### Configuring DI Framework
+This example demonstrates how to configure your dependency injection (DI) framework (Dishka in this case) to work with Bazario:
+```python
+from bazario import Dispatcher, PipelineBehaviourRegistry
 from bazario.plugins.dishka import (
     DishkaHandlerFinder,
     DishkaHandlerResolver,
 )
 from dishka import Provider, Scope, make_container
-
 
 def build_container() -> Container:
     main_provider = Provider(scope=Scope.REQUEST)
@@ -78,71 +87,75 @@ def build_container() -> Container:
     main_provider.provide(WithParents[Dispatcher])
     main_provider.provide(WithParents[DishkaHandlerFinder])
     main_provider.provide(WithParents[DishkaHandlerResolver])
-    # other registrations like PostRepository, TransactionCommiter, etc.
+    # Additional registrations (PostRepository, TransactionCommiter, etc.)
 
     return make_container(main_provider)
 ```
-## Main usage
-``` python
-from bazario import Sender
 
+### Basic Usage
+This example showcases the basic usage of sending a request via the `Sender` protocol:
+```python
+from bazario import Sender
 
 with container() as request_container:
     sender = request_container.get(Sender)
 
     request = AddPost(
-        title="Sicilian defense. The way to destroy e4!",
-        description="In this article we are talking about the sicilian defense: e4-c5!?",
+        title="Sicilian Defense: Countering e4!",
+        description="An in-depth analysis of the Sicilian Defense: e4-c5!?",
     )
     post_id = sender.send(request)
-    print(f"Post with id {post_id} was added")
+    print(f"Post with ID {post_id} was added")
 ```
 
-## Notifications publishing
-Define notifications and its handlers
-``` python
-from bazario import Notification, NotificationHandler
+### Notifications and Event Handling
 
+**Notifications** in Bazario represent events that are published in response to certain actions. They are used to notify other parts of the system about changes that have occurred, without requiring a return result.
+
+**Notification Handlers** are responsible for processing these notifications.
+
+Here's an example of defining a notification and its handlers:
+Define notifications and their handlers:
+```python
+from bazario import Notification, NotificationHandler
 
 @dataclass(frozen=True)
 class PostAdded(Notification):
     post_id: int
     user_id: int
 
-
 class PostAddedFirstHandler(NotificationHandler[PostAdded]):
     def handle(self, notification: PostAdded) -> None:
         logger.info(
-            "Post first added: post_id=%s,  user_id=%s", 
+            "Post first added: post_id=%s, user_id=%s",
             notification.post_id, notification.user_id,
         )
-
 
 class PostAddedSecondHandler(NotificationHandler[PostAdded]):
     def handle(self, notification: PostAdded) -> None:
         logger.info(
-            "Post second added: post_id=%s,  user_id=%s", 
+            "Post second added: post_id=%s, user_id=%s",
             notification.post_id, notification.user_id,
         )
 ```
-## Register handlers to your container(for an example in dishka)
-``` python
+
+Register handlers in your container:
+```python
 def build_container() -> Container:
-    ...
+    # ...
     main_provider.provide(PostAddedFirstHandler)
     main_provider.provide(PostAddedSecondHandler)
-    ...
+    # ...
 ```
-## Finally you can use notifications and publish them
-``` python
-...
-from bazario import Publisher
 
+Implementation of notification publication within the request handler:
+```python
+from bazario import Publisher
 
 class AddPostHandler(RequestHandler[AddPost, int]):
     def __init__(
         self,
-        publisher: Publisher,
+        publisher: Publisher, # for notification publishing
         post_factory: PostFactory,
         user_provider: UserProvider,
         post_repository: PostRepository,
@@ -163,33 +176,174 @@ class AddPostHandler(RequestHandler[AddPost, int]):
         )
         self._post_repository.add(new_post)
         self._publisher.publish(PostAdded(
-            post_id=post_id,
+            post_id=new_post.id,
             user_id=user_id,
-        ))
-        # Post first added: post_id=1,  user_id=2
-        # Post second added: post_id=1,  user_id=2
+        )) # notification publishing
         self._transaction_commiter.commit()
 
         return new_post.id
 ```
 
-### Why **Bazario**?
-I reviewed existing alternatives and found several issues that **Bazario** solves:
+## Pipeline Behaviors
+Pipeline behaviors in **Bazario** enable pre- and post-processing logic for requests and notifications. These behaviors form a chain around the core handler logic and can modify or enhance the data flow.
 
-- **Lack of support for both synchronous and asynchronous handlers**: Most libraries require choosing between synchronous or asynchronous processing, limiting flexibility.  
-  **Bazario** addresses this issue by supporting both synchronous and asynchronous handling through the **asyncio** package for async operations. This allows the library to be used in various types of applications without limiting the developer’s choice of processing type.
+### Defining Pipeline Behaviors
+```python
+from bazario import (
+    PipelineBehaviour,
+    Resolver,
+    HandleNext,
+    Request,
+    Notification,
+)
 
-- **Control over IoC container and scope creation**: This is often handled by the library itself, leading to bugs and side effects. It can also reduce performance, as multiple parallel containers could be created.  
-  **Bazario** allows the client to control the IoC container and scope creation, giving full control over the container’s lifecycle and preventing performance issues or side effects caused by redundant container instances.
+# Behavior for all requests
+class RequestLoggingBehaviour(PipelineBehaviour[Request, Any]):
+    def handle(
+        self,
+        resolver: Resolver,
+        target: Request,
+        handle_next: HandleNext[Request, Any],
+    ) -> Any:
+        logger = resolver.resolve(Logger)
+        logger.log_info("Before request handler execution")
+        response = handle_next(resolver, target)
+        logger.log_info(f"After request handler execution. Response: {response}")
+        
+        return response
 
-- **Code duplication when registering handlers**: In many libraries, handlers need to be registered both in the library’s object and in the IoC container, which results in code duplication.  
-  **Bazario** eliminates this duplication by ensuring that handlers are registered directly in the IoC container, making the code cleaner and easier to maintain, and reducing unnecessary configuration.
+# Behavior for all notifications
+class NotificationLoggingBehaviour(PipelineBehaviour[Notification, None]):
+    def handle(
+        self,
+        resolver: Resolver,
+        target: Notification,
+        handle_next: HandleNext[Notification, None],
+    ) -> None:
+        logger = resolver.resolve(Logger)
+        logger.log_info("Before notification handler execution")
+        handle_next(resolver, target)
+        logger.log_info("After notification handler execution")
 
-- **Lack of modularity**: In other libraries, integrating different DI frameworks is challenging without rewriting significant portions of the logic.  
-  **Bazario** solves this problem by utilizing a modular plugin system, allowing easy integration with any DI framework. This provides the ability to use **Bazario** in different environments without being tied to a specific DI framework.
+# Behavior specific to AddPost request
+class AddPostLoggingBehaviour(PipelineBehaviour[AddPost, int]):
+    def handle(
+        self,
+        resolver: Resolver,
+        target: AddPost,
+        handle_next: HandleNext[AddPost, int],
+    ) -> int:
+        logger = resolver.resolve(Logger)
+        logger.log_info("Before post addition")
+        response = handle_next(resolver, target)
+        logger.log_info(f"After post addition: id = {response}")
+        
+        return response
 
-- **Violation of SOLID principles**: Some libraries do not fully adhere to SOLID principles, making the code more complex and harder to maintain.  
-  **Bazario** fully adheres to SOLID principles, particularly ISP (Interface Segregation Principle). For example, instead of tightly coupling everything to a Dispatcher, **Bazario** separates responsibilities by introducing the **Publisher** protocol for event publication and the **Sender** protocol for sending requests, leading to better responsibility separation and reduced unnecessary dependencies.
+# Behavior specific to PostAdded notification
+class PostAddedLoggingBehaviour(PipelineBehaviour[PostAdded, None]):
+    def handle(
+        self,
+        resolver: Resolver,
+        target: PostAdded,
+        handle_next: HandleNext[PostAdded, None],
+    ) -> None:
+        logger = resolver.resolve(Logger)
+        logger.log_info("Before post added handler execution")
+        handle_next(resolver, target)
+        logger.log_info(f"After post added handler execution: id = {target.post_id}")
+```
 
-- **Dependency Separation**: In traditional approaches, controllers often handle both request parsing and handler resolution, which increases their complexity and reduces testability.  
-  **Bazario** addresses this by delegating all handler routing responsibilities to **Bazario**, allowing controllers to focus solely on parsing requests. This improves responsibility separation and makes controller code cleaner and more testable.
+### Registering Pipeline Behaviors
+Define the factory function for `PipelineBehaviourRegistry`. The order of behavior registration determines the execution sequence - behaviors are executed in the order they are added:
+
+```python
+from bazario import PipelineBehaviourRegistry
+
+def build_registry() -> PipelineBehaviourRegistry:
+    registry = PipelineBehaviourRegistry()
+    # Behaviors will execute in this order:
+    # 1. RequestLoggingBehaviour
+    # 2. NotificationLoggingBehaviour
+    # 3. AddPostLoggingBehaviour
+    # 4. PostAddedLoggingBehaviour
+    registry.add_behaviours(Request, RequestLoggingBehaviour())
+    registry.add_behaviours(Notification, NotificationLoggingBehaviour())
+    registry.add_behaviours(AddPost, AddPostLoggingBehaviour())
+    registry.add_behaviours(PostAdded, PostAddedLoggingBehaviour())
+
+    return registry
+```
+
+The execution order follows these rules:
+1. Global behaviors (registered for base types like `Request` or `Notification`) execute first
+2. Specific behaviors (registered for concrete types like `AddPost` or `PostAdded`) execute after global ones
+3. Within each category (global/specific), behaviors execute in the order they were registered
+4. For a single request/notification, all applicable behaviors form a chain in this order
+
+Example of execution flow for an `AddPost` request:
+```python
+def build_registry() -> PipelineBehaviourRegistry:
+    registry = PipelineBehaviourRegistry()
+    
+    registry.add_behaviours(Request, RequestLoggingBehaviour())
+    registry.add_behaviours(
+        AddPost, 
+        ValidationBehaviour(), 
+        MetricsBehaviour(),
+    )
+
+    return registry
+
+# Execution sequence for AddPost request:
+# 1. RequestLoggingBehaviour
+# 2. ValidationBehaviour
+# 3. MetricsBehaviour
+# 4. Actual AddPost handler
+```
+
+Configure the IoC container:
+```python
+def build_container() -> Container:
+    # ...
+    main_provider.provide(build_registry)
+    # Note: The Dispatcher depends on PipelineBehaviourRegistry.
+    # If you're not using pipeline behaviors, register PipelineBehaviourRegistry directly:
+    # main_provider.provide(PipelineBehaviourRegistry)
+    # ...
+```
+
+### Benefits of Pipeline Behaviors
+Pipeline behaviors solve several common issues:
+- Centralize cross-cutting concerns
+- Keep handlers focused on business logic
+- Enable flexible behavior execution order
+- Eliminate code duplication in validation and response modification
+
+## Why Choose Bazario?
+
+Bazario addresses several limitations found in alternative libraries:
+
+1. **Flexible Handler Support**: Supports both synchronous and asynchronous handlers through the **asyncio** package
+
+2. **IoC Container Control**: Gives developers full control over container lifecycle and scope creation
+
+3. **Simplified Registration**: Eliminates code duplication by registering handlers directly in the IoC container
+
+4. **Enhanced Modularity**: Features a plugin system for easy integration with various DI frameworks
+
+5. **SOLID Compliance**: Strictly adheres to SOLID principles, particularly the Interface Segregation Principle
+
+6. **Clean Separation**: Controllers focus on request parsing while Bazario handles routing, improving code organization and testability
+
+7. **Powerful Pipeline System**: Offers a sophisticated behavior pipeline architecture that allows developers to:
+   - Implement cross-cutting concerns without modifying existing code
+   - Create reusable middleware components
+   - Configure different processing chains for different types of requests and notifications
+   - Add monitoring, logging, and error handling in a centralized way
+
+8. **Flexible Processing Control**: Enables fine-grained control over request and notification processing through:
+   - Custom pipeline behaviors for specific request or notification types
+   - Global behaviors for all requests or notifications
+   - Configurable execution order of pipeline behaviors
+   - Easy integration of new processing requirements without changing handler logic

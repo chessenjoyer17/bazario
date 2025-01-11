@@ -1,6 +1,6 @@
 __all__ = (
     "DishkaHandlerFinder",
-    "DishkaHandlerResolver",
+    "DishkaResolver",
 )
 
 from collections.abc import Iterable
@@ -9,24 +9,24 @@ from dishka import AsyncContainer
 
 from bazario import Notification, Request
 from bazario.asyncio import (
-    HandlerResolver,
     NotificationHandler,
     RequestHandler,
-    THandler,
+    Resolver,
 )
 from bazario.asyncio.protocols.finder import HandlerFinder
-from bazario.type_inspection import (
+from bazario.typing.type_inspection import (
     extract_base_generic_type,
     matches_generic_type,
 )
+from bazario.typing.type_vars import TDependency
 
 
-class DishkaHandlerResolver(HandlerResolver):
+class DishkaResolver(Resolver):
     def __init__(self, container: AsyncContainer) -> None:
         self._container = container
 
-    async def resolve(self, handler_type: type[THandler]) -> THandler:
-        return await self._container.get(handler_type)
+    async def resolve(self, dependency_type: type[TDependency]) -> TDependency:
+        return await self._container.get(dependency_type)
 
 
 class DishkaHandlerFinder(HandlerFinder):

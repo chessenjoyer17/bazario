@@ -1,6 +1,12 @@
+from bazario.asyncio.pipeline.behaviour_registry import (
+    PipelineBehaviourRegistry,
+)
+from bazario.asyncio.pipeline.wrap_pipeline_behaviours import (
+    wrap_pipeline_behaviours,
+)
 from bazario.asyncio.protocols.finder import HandlerFinder
 from bazario.asyncio.protocols.publisher import Publisher
-from bazario.asyncio.protocols.resolver import HandlerResolver
+from bazario.asyncio.protocols.resolver import Resolver
 from bazario.asyncio.protocols.sender import Sender, TRes
 from bazario.exceptions import HandlerNotFoundError
 from bazario.markers import Notification, Request
@@ -9,11 +15,13 @@ from bazario.markers import Notification, Request
 class Dispatcher(Sender, Publisher):
     def __init__(
         self,
+        resolver: Resolver,
         handler_finder: HandlerFinder,
-        handler_resolver: HandlerResolver,
+        pipeline_behaviour_registry: PipelineBehaviourRegistry,
     ) -> None:
+        self._resolver = resolver
         self._handler_finder = handler_finder
-        self._handler_resolver = handler_resolver
+        self._pipeline_behaviour_registry = pipeline_behaviour_registry
 
     async def send(self, request: Request[TRes]) -> TRes:
         request_type = type(request)
@@ -24,16 +32,25 @@ class Dispatcher(Sender, Publisher):
         if handler_type is None:
             raise HandlerNotFoundError(request_type)
 
-        handler = await self._handler_resolver.resolve(handler_type)
+        handler = await self._resolver.resolve(handler_type)
+        behaviours = self._pipeline_behaviour_registry.get_behaviours(
+            request_type,
+        )
+        pipeline = wrap_pipeline_behaviours(behaviours, handler)
 
-        return await handler.handle(request)
+        return await pipeline(self._resolver, request)
 
     async def publish(self, notification: Notification) -> None:
         notification_type = type(notification)
         handler_types = await self._handler_finder.find_with_notification(
             notification_type,
         )
+        behaviours = self._pipeline_behaviour_registry.get_behaviours(
+            notification_type,
+        )
 
         for handler_type in handler_types:
-            handler = await self._handler_resolver.resolve(handler_type)
-            await handler.handle(notification)
+            handler = await self._resolver.resolve(handler_type)
+            pipeline = wrap_pipeline_behaviours(behaviours, handler)
+
+            await pipeline(self._resolver, notification)
