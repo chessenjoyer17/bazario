@@ -1,6 +1,6 @@
 # Bazario
 
-**Bazario** is a lightweight handler routing library designed for modular applications, implementing the CQRS (Command and Query Responsibility Segregation) pattern. It simplifies development by providing centralized handling of requests (Requests) and events (Notifications), with efficient handler routing and support for both synchronous and asynchronous operations.
+**Bazario** is a lightweight handler routing library designed for modular applications. It simplifies development by providing centralized mechanisms for handling requests (Requests) and events (Notifications), with efficient handler routing and support for both synchronous and asynchronous operations.
 
 ### Key Features
 - **Request Handling**: A streamlined mechanism for handling requests with clear separation of responsibilities
