@@ -76,7 +76,7 @@ This example demonstrates how to configure your dependency injection (DI) framew
 from bazario import Dispatcher, PipelineBehaviorRegistry
 from bazario.plugins.dishka import (
     DishkaHandlerFinder,
-    DishkaHandlerResolver,
+    DishkaResolver,
 )
 from dishka import Provider, Scope, make_container
 
@@ -86,7 +86,7 @@ def build_container() -> Container:
     main_provider.provide(AddPostHandler)
     main_provider.provide(WithParents[Dispatcher])
     main_provider.provide(WithParents[DishkaHandlerFinder])
-    main_provider.provide(WithParents[DishkaHandlerResolver])
+    main_provider.provide(WithParents[DishkaResolver])
     # Additional registrations (PostRepository, TransactionCommiter, etc.)
 
     return make_container(main_provider)
