@@ -36,8 +36,21 @@ class AddPostHandler(RequestHandler[AddPost, int]):
 
         return new_post.id
 ```
-### Basic Usage
-This example showcases the basic usage of sending a request via the `Sender` protocol:
+
+Add handlers to `Registry`:
+``` python
+# ...
+registry.add_request_handler(AddPost, AddPostHandler)
+# ...
+```
+
+Add handlers to your IoC container:
+``` python
+# ...
+container.register(AddPostHandler)
+# ...
+```
+Finally, you can send requests:
 ```python
 from bazario import Sender
 

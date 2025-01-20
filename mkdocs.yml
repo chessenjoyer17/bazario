@@ -27,12 +27,14 @@ repo_url: https://github.com/chessenjoyer17/bazario
 
 nav:
   - Introduction: index.md
-  - Installation: installation.md
   - Core concepts:
     - Requests and handlers: core-concepts/requests-and-handlers.md
     - Notifications and events: core-concepts/notifications-and-events.md
     - Pipeline Behaviors: core-concepts/pipeline-behaviors.md
-    - Ioc integration: core-concepts/ioc-integration.md
+  - Resolvers:
+    - Resolvers in bazario: resolvers/resolvers-in-bazario.md
+    - Dishka resolver: resolvers/dishka-resolver.md
+    - Punq resolver: resolvers/punq-resolver.md
   - Why bazario?: why-bazario.md
 
 markdown_extensions:

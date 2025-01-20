@@ -13,12 +13,14 @@ class PostAdded(Notification):
     post_id: int
     user_id: int
 
+
 class PostAddedFirstHandler(NotificationHandler[PostAdded]):
     def handle(self, notification: PostAdded) -> None:
         logger.info(
             "Post first added: post_id=%s, user_id=%s",
             notification.post_id, notification.user_id,
         )
+
 
 class PostAddedSecondHandler(NotificationHandler[PostAdded]):
     def handle(self, notification: PostAdded) -> None:
@@ -27,46 +29,32 @@ class PostAddedSecondHandler(NotificationHandler[PostAdded]):
             notification.post_id, notification.user_id,
         )
 ```
-Register handlers in your container:
+
+Add handlers to `Registry`:
 ``` python
-def build_container() -> Container:
-    # ...
-    main_provider.provide(PostAddedFirstHandler)
-    main_provider.provide(PostAddedSecondHandler)
-    # ...
+# ...
+registry.add_notification_handlers(
+    PostAdded, 
+    PostAddedFirstHandler,
+    PostAddedSecondHandler,
+)
+# ...
 ```
-Implementation of notification publication within the request handler:
+
+Add handlers to your IoC container:
+``` python
+# ...
+container.register(PostAddedFirstHandler)
+container.register(PostAddedSecondHandler)
+# ...
+```
+Finally, you can publish natifications:
 ``` python
 from bazario import Publisher
 
-class AddPostHandler(RequestHandler[AddPost, int]):
-    def __init__(
-        self,
-        publisher: Publisher, # for notification publishing
-        post_factory: PostFactory,
-        user_provider: UserProvider,
-        post_repository: PostRepository,
-        transaction_commiter: TransactionCommiter,
-    ) -> None:
-        self._publisher = publisher
-        self._post_factory = post_factory
-        self._user_provider = user_provider
-        self._post_repository = post_repository
-        self._transaction_commiter = transaction_commiter
-    
-    def handle(self, request: AddPost) -> int:
-        user_id = self._user_provider.get_id()
-        new_post = self._post_factory.create(
-            title=request.title,
-            content=request.content,
-            owner_id=user_id,
-        )
-        self._post_repository.add(new_post)
-        self._publisher.publish(PostAdded(
-            post_id=new_post.id,
-            user_id=user_id,
-        )) # notification publishing
-        self._transaction_commiter.commit()
 
-        return new_post.id
+def controller(publisher: Publisher) -> None:
+    publisher.publish(PostAdded(post_id=1, user_id=1))
+    # Post first added: post_id=1, user_id=1
+    # Post second added: post_id=1, user_id=1
 ```

@@ -11,79 +11,83 @@ from bazario import (
 )
 
 # Behavior for all requests
-class RequestLoggingBehavior(PipelineBehavior[Request, Any]):
-    def handle(
-        self,
-        resolver: Resolver,
-        target: Request,
-        handle_next: HandleNext[Request, Any],
-    ) -> Any:
-        logger = resolver.resolve(Logger)
-        logger.log_info("Before request handler execution")
-        response = handle_next(resolver, target)
-        logger.log_info(f"After request handler execution. Response: {response}")
+from bazario import PipelineBehavior, HandleNext, Request
+
+class AuthenticationCheckBehavior(PipelineBehavior[Request, Any]):
+    def __init__(self, user_provider: UserProvider) -> None:
+        self._user_provider = user_provider
+
+    def handle(self, request: Request, handle_next: HandleNext[Request, Any]) -> Any:
+        # Check if user is authenticated
+        if not self._user_provider.is_authenticated():
+            raise PermissionError("User is not authenticated.")
         
-        return response
+        # Proceed to the next handler or behavior
+        return handle_next(request)
+
 
 # Behavior for all notifications
-class NotificationLoggingBehavior(PipelineBehavior[Notification, None]):
+class AddToEventStoreBehavior(PipelineBehavior[Notification, None]):
+    def __init__(self, event_store: EventStore) -> None:
+        self._event_store = event_store
+
     def handle(
-        self,
-        resolver: Resolver,
-        target: Notification,
+        self, 
+        request: Notification, 
         handle_next: HandleNext[Notification, None],
     ) -> None:
-        logger = resolver.resolve(Logger)
-        logger.log_info("Before notification handler execution")
-        handle_next(resolver, target)
-        logger.log_info("After notification handler execution")
+        self._event_store.add(request)
+        return handle_next(request)
 
 # Behavior specific to AddPost request
-class AddPostLoggingBehavior(PipelineBehavior[AddPost, int]):
+class AddPostValidationBehavior(PipelineBehavior[AddPost, int]):
     def handle(
         self,
-        resolver: Resolver,
-        target: AddPost,
+        request: AddPost,
         handle_next: HandleNext[AddPost, int],
     ) -> int:
-        logger = resolver.resolve(Logger)
-        logger.log_info("Before post addition")
-        response = handle_next(resolver, target)
-        logger.log_info(f"After post addition: id = {response}")
-        
-        return response
+        if not request.title:
+            raise ValidationError("Title required")
+
+        if not request.content:
+            raise ValidationError("Content required")
+
+        return handle_next(request)
 
 # Behavior specific to PostAdded notification
-class PostAddedLoggingBehavior(PipelineBehavior[PostAdded, None]):
-    def handle(
-        self,
-        resolver: Resolver,
-        target: PostAdded,
-        handle_next: HandleNext[PostAdded, None],
-    ) -> None:
-        logger = resolver.resolve(Logger)
-        logger.log_info("Before post added handler execution")
-        handle_next(resolver, target)
-        logger.log_info(f"After post added handler execution: id = {target.post_id}")
+class PostAddedEmailBehavior(PipelineBehavior[PostAdded, None]):
+    def __init__(self, email_service: EmailService) -> None:
+        self._email_service = email_service
+
+    def handle(self, request: PostAdded, handle_next: HandleNext[PostAdded, None]) -> None:
+        # Send a thank-you email to the user
+        self._email_service.send_email(
+            to_user_id=request.user_id,
+            subject="Thank you for adding a post!",
+            body=f"Dear User {request.user_id}, thank you for your post with ID {request.post_id}!"
+        )
+        
+        # Proceed with the next behavior or handler
+        return handle_next(request)
 ```
 
 ### Registering Pipeline Behaviors
-Define the factory function for `PipelineBehaviorRegistry`. The order of behavior registration determines the execution sequence - behaviors are executed in the order they are added:
+Register your behaviors to `Registry`. The order of behavior registration determines the execution sequence - behaviors are executed in the order they are added:
 
 ```python
-from bazario import PipelineBehaviorRegistry
+from bazario import Registry
 
-def build_registry() -> PipelineBehaviorRegistry:
-    registry = PipelineBehaviorRegistry()
+def provide_registry() -> Registry:
+    registry = Registry()
     # Behaviors will execute in this order:
-    # 1. RequestLoggingBehavior
-    # 2. NotificationLoggingBehavior
-    # 3. AddPostLoggingBehavior
-    # 4. PostAddedLoggingBehavior
-    registry.add_behaviours(Request, RequestLoggingBehaviour())
-    registry.add_behaviours(Notification, NotificationLoggingBehaviour())
-    registry.add_behaviours(AddPost, AddPostLoggingBehaviour())
-    registry.add_behaviours(PostAdded, PostAddedLoggingBehaviour())
+    # 1. AuthenticationCheckBehavior
+    # 2. AddToEventStoreBehavior
+    # 3. AddPostValidationBehavior
+    # 4. PostAddedEmailBehavior
+    registry.add_pipeline_behaviors(Request, AuthenticationCheckBehavior)
+    registry.add_pipeline_behaviors(Notification, AddToEventStoreBehavior)
+    registry.add_pipeline_behaviors(AddPost, AddPostValidationBehavior)
+    registry.add_pipeline_behaviors(PostAdded, PostAddedEmailBehavior)
 
     return registry
 ```
@@ -96,34 +100,26 @@ The execution order follows these rules:
 
 Example of execution flow for an `AddPost` request:
 ```python
-def build_registry() -> PipelineBehaviourRegistry:
-    registry = PipelineBehaviourRegistry()
+def provide_registry() -> Registry:
+    registry = Registry()
     
-    registry.add_behaviours(Request, RequestLoggingBehaviour())
-    registry.add_behaviours(
-        AddPost, 
-        ValidationBehaviour(), 
-        MetricsBehaviour(),
-    )
+    registry.add_behaviors(Request, RequestLoggingBehavior)
+    registry.add_behaviors(AddPost, ValidationBehavior, MetricsBehavior)
 
     return registry
 
 # Execution sequence for AddPost request:
-# 1. RequestLoggingBehaviour
-# 2. ValidationBehaviour
-# 3. MetricsBehaviour
+# 1. RequestLoggingBehavior
+# 2. ValidationBehavior
+# 3. MetricsBehavior
 # 4. Actual AddPost handler
 ```
 
-Configure the IoC container:
+Add to your IoC Container:
 ```python
-def build_container() -> Container:
-    # ...
-    main_provider.provide(build_registry)
-    # Note: The Dispatcher depends on PipelineBehaviourRegistry.
-    # If you're not using pipeline behaviors, register PipelineBehaviourRegistry directly:
-    # main_provider.provide(PipelineBehaviourRegistry)
-    # ...
+# ...
+container.register(Registry, provide_registry)
+# ...
 ```
 
 ### Benefits of Pipeline Behaviors

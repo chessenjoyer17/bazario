@@ -10,7 +10,7 @@ where = ["src"]
 
 [project]
 name = "bazario"
-version = "0.2.7"
+version = "0.3.0"
 readme = "README.md"
 authors = [{ name = "Alim Abrekov", email = "chessinmind17@yandex.ru" }]
 description = "Lightweight handler routing library for modular apps."
@@ -31,6 +31,7 @@ classifiers = [
 test = ["pytest"]
 lint = ["ruff", "mypy"]
 dishka = ["dishka"]
+punq = ["punq"]
 
 
 [project.urls]
