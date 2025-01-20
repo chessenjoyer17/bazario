@@ -16,7 +16,7 @@
         <link rel="prev" href="../notifications-and-events/">
       
       
-        <link rel="next" href="../ioc-integration/">
+        <link rel="next" href="../../resolvers/resolvers-in-bazario/">
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
@@ -274,26 +274,6 @@
       
   
   
-  
-  
-    <li class="md-nav__item">
-      <a href="../../installation/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Installation
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-    
-      
-      
-  
-  
     
   
   
@@ -306,10 +286,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
         
           
-          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
             
   
   <span class="md-ellipsis">
@@ -320,8 +300,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_3">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
             <span class="md-nav__icon md-icon"></span>
             Core concepts
           </label>
@@ -453,6 +433,48 @@
 
               
             
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Resolvers
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Resolvers
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
               
                 
   
@@ -460,11 +482,53 @@
   
   
     <li class="md-nav__item">
-      <a href="../ioc-integration/" class="md-nav__link">
+      <a href="../../resolvers/resolvers-in-bazario/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Ioc integration
+    Resolvers in bazario
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resolvers/dishka-resolver/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Dishka resolver
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resolvers/punq-resolver/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Punq resolver
   </span>
   
 
@@ -583,76 +647,80 @@
 <span class="p">)</span>
 
 <span class="c1"># Behavior for all requests</span>
-<span class="k">class</span> <span class="nc">RequestLoggingBehavior</span><span class="p">(</span><span class="n">PipelineBehavior</span><span class="p">[</span><span class="n">Request</span><span class="p">,</span> <span class="n">Any</span><span class="p">]):</span>
-    <span class="k">def</span> <span class="nf">handle</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">resolver</span><span class="p">:</span> <span class="n">Resolver</span><span class="p">,</span>
-        <span class="n">target</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span>
-        <span class="n">handle_next</span><span class="p">:</span> <span class="n">HandleNext</span><span class="p">[</span><span class="n">Request</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
-        <span class="n">logger</span> <span class="o">=</span> <span class="n">resolver</span><span class="o">.</span><span class="n">resolve</span><span class="p">(</span><span class="n">Logger</span><span class="p">)</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">log_info</span><span class="p">(</span><span class="s2">&quot;Before request handler execution&quot;</span><span class="p">)</span>
-        <span class="n">response</span> <span class="o">=</span> <span class="n">handle_next</span><span class="p">(</span><span class="n">resolver</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">log_info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;After request handler execution. Response: </span><span class="si">{</span><span class="n">response</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">bazario</span> <span class="kn">import</span> <span class="n">PipelineBehavior</span><span class="p">,</span> <span class="n">HandleNext</span><span class="p">,</span> <span class="n">Request</span>
 
-        <span class="k">return</span> <span class="n">response</span>
+<span class="k">class</span> <span class="nc">AuthenticationCheckBehavior</span><span class="p">(</span><span class="n">PipelineBehavior</span><span class="p">[</span><span class="n">Request</span><span class="p">,</span> <span class="n">Any</span><span class="p">]):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_provider</span><span class="p">:</span> <span class="n">UserProvider</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_user_provider</span> <span class="o">=</span> <span class="n">user_provider</span>
+
+    <span class="k">def</span> <span class="nf">handle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span> <span class="n">handle_next</span><span class="p">:</span> <span class="n">HandleNext</span><span class="p">[</span><span class="n">Request</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+        <span class="c1"># Check if user is authenticated</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user_provider</span><span class="o">.</span><span class="n">is_authenticated</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="ne">PermissionError</span><span class="p">(</span><span class="s2">&quot;User is not authenticated.&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Proceed to the next handler or behavior</span>
+        <span class="k">return</span> <span class="n">handle_next</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+
 
 <span class="c1"># Behavior for all notifications</span>
-<span class="k">class</span> <span class="nc">NotificationLoggingBehavior</span><span class="p">(</span><span class="n">PipelineBehavior</span><span class="p">[</span><span class="n">Notification</span><span class="p">,</span> <span class="kc">None</span><span class="p">]):</span>
+<span class="k">class</span> <span class="nc">AddToEventStoreBehavior</span><span class="p">(</span><span class="n">PipelineBehavior</span><span class="p">[</span><span class="n">Notification</span><span class="p">,</span> <span class="kc">None</span><span class="p">]):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event_store</span><span class="p">:</span> <span class="n">EventStore</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_event_store</span> <span class="o">=</span> <span class="n">event_store</span>
+
     <span class="k">def</span> <span class="nf">handle</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">resolver</span><span class="p">:</span> <span class="n">Resolver</span><span class="p">,</span>
-        <span class="n">target</span><span class="p">:</span> <span class="n">Notification</span><span class="p">,</span>
+        <span class="bp">self</span><span class="p">,</span> 
+        <span class="n">request</span><span class="p">:</span> <span class="n">Notification</span><span class="p">,</span> 
         <span class="n">handle_next</span><span class="p">:</span> <span class="n">HandleNext</span><span class="p">[</span><span class="n">Notification</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">logger</span> <span class="o">=</span> <span class="n">resolver</span><span class="o">.</span><span class="n">resolve</span><span class="p">(</span><span class="n">Logger</span><span class="p">)</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">log_info</span><span class="p">(</span><span class="s2">&quot;Before notification handler execution&quot;</span><span class="p">)</span>
-        <span class="n">handle_next</span><span class="p">(</span><span class="n">resolver</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">log_info</span><span class="p">(</span><span class="s2">&quot;After notification handler execution&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_event_store</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">handle_next</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
 
 <span class="c1"># Behavior specific to AddPost request</span>
-<span class="k">class</span> <span class="nc">AddPostLoggingBehavior</span><span class="p">(</span><span class="n">PipelineBehavior</span><span class="p">[</span><span class="n">AddPost</span><span class="p">,</span> <span class="nb">int</span><span class="p">]):</span>
+<span class="k">class</span> <span class="nc">AddPostValidationBehavior</span><span class="p">(</span><span class="n">PipelineBehavior</span><span class="p">[</span><span class="n">AddPost</span><span class="p">,</span> <span class="nb">int</span><span class="p">]):</span>
     <span class="k">def</span> <span class="nf">handle</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">resolver</span><span class="p">:</span> <span class="n">Resolver</span><span class="p">,</span>
-        <span class="n">target</span><span class="p">:</span> <span class="n">AddPost</span><span class="p">,</span>
+        <span class="n">request</span><span class="p">:</span> <span class="n">AddPost</span><span class="p">,</span>
         <span class="n">handle_next</span><span class="p">:</span> <span class="n">HandleNext</span><span class="p">[</span><span class="n">AddPost</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-        <span class="n">logger</span> <span class="o">=</span> <span class="n">resolver</span><span class="o">.</span><span class="n">resolve</span><span class="p">(</span><span class="n">Logger</span><span class="p">)</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">log_info</span><span class="p">(</span><span class="s2">&quot;Before post addition&quot;</span><span class="p">)</span>
-        <span class="n">response</span> <span class="o">=</span> <span class="n">handle_next</span><span class="p">(</span><span class="n">resolver</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">log_info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;After post addition: id = </span><span class="si">{</span><span class="n">response</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">request</span><span class="o">.</span><span class="n">title</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s2">&quot;Title required&quot;</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">response</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">request</span><span class="o">.</span><span class="n">content</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="s2">&quot;Content required&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">handle_next</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
 
 <span class="c1"># Behavior specific to PostAdded notification</span>
-<span class="k">class</span> <span class="nc">PostAddedLoggingBehavior</span><span class="p">(</span><span class="n">PipelineBehavior</span><span class="p">[</span><span class="n">PostAdded</span><span class="p">,</span> <span class="kc">None</span><span class="p">]):</span>
-    <span class="k">def</span> <span class="nf">handle</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">resolver</span><span class="p">:</span> <span class="n">Resolver</span><span class="p">,</span>
-        <span class="n">target</span><span class="p">:</span> <span class="n">PostAdded</span><span class="p">,</span>
-        <span class="n">handle_next</span><span class="p">:</span> <span class="n">HandleNext</span><span class="p">[</span><span class="n">PostAdded</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">logger</span> <span class="o">=</span> <span class="n">resolver</span><span class="o">.</span><span class="n">resolve</span><span class="p">(</span><span class="n">Logger</span><span class="p">)</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">log_info</span><span class="p">(</span><span class="s2">&quot;Before post added handler execution&quot;</span><span class="p">)</span>
-        <span class="n">handle_next</span><span class="p">(</span><span class="n">resolver</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">log_info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;After post added handler execution: id = </span><span class="si">{</span><span class="n">target</span><span class="o">.</span><span class="n">post_id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">PostAddedEmailBehavior</span><span class="p">(</span><span class="n">PipelineBehavior</span><span class="p">[</span><span class="n">PostAdded</span><span class="p">,</span> <span class="kc">None</span><span class="p">]):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">email_service</span><span class="p">:</span> <span class="n">EmailService</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_email_service</span> <span class="o">=</span> <span class="n">email_service</span>
+
+    <span class="k">def</span> <span class="nf">handle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">:</span> <span class="n">PostAdded</span><span class="p">,</span> <span class="n">handle_next</span><span class="p">:</span> <span class="n">HandleNext</span><span class="p">[</span><span class="n">PostAdded</span><span class="p">,</span> <span class="kc">None</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># Send a thank-you email to the user</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_email_service</span><span class="o">.</span><span class="n">send_email</span><span class="p">(</span>
+            <span class="n">to_user_id</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">user_id</span><span class="p">,</span>
+            <span class="n">subject</span><span class="o">=</span><span class="s2">&quot;Thank you for adding a post!&quot;</span><span class="p">,</span>
+            <span class="n">body</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Dear User </span><span class="si">{</span><span class="n">request</span><span class="o">.</span><span class="n">user_id</span><span class="si">}</span><span class="s2">, thank you for your post with ID </span><span class="si">{</span><span class="n">request</span><span class="o">.</span><span class="n">post_id</span><span class="si">}</span><span class="s2">!&quot;</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Proceed with the next behavior or handler</span>
+        <span class="k">return</span> <span class="n">handle_next</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
 </code></pre></div>
 <h3 id="registering-pipeline-behaviors">Registering Pipeline Behaviors</h3>
-<p>Define the factory function for <code>PipelineBehaviorRegistry</code>. The order of behavior registration determines the execution sequence - behaviors are executed in the order they are added:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">bazario</span> <span class="kn">import</span> <span class="n">PipelineBehaviorRegistry</span>
+<p>Register your behaviors to <code>Registry</code>. The order of behavior registration determines the execution sequence - behaviors are executed in the order they are added:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">bazario</span> <span class="kn">import</span> <span class="n">Registry</span>
 
-<span class="k">def</span> <span class="nf">build_registry</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">PipelineBehaviorRegistry</span><span class="p">:</span>
-    <span class="n">registry</span> <span class="o">=</span> <span class="n">PipelineBehaviorRegistry</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">provide_registry</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Registry</span><span class="p">:</span>
+    <span class="n">registry</span> <span class="o">=</span> <span class="n">Registry</span><span class="p">()</span>
     <span class="c1"># Behaviors will execute in this order:</span>
-    <span class="c1"># 1. RequestLoggingBehavior</span>
-    <span class="c1"># 2. NotificationLoggingBehavior</span>
-    <span class="c1"># 3. AddPostLoggingBehavior</span>
-    <span class="c1"># 4. PostAddedLoggingBehavior</span>
-    <span class="n">registry</span><span class="o">.</span><span class="n">add_behaviours</span><span class="p">(</span><span class="n">Request</span><span class="p">,</span> <span class="n">RequestLoggingBehaviour</span><span class="p">())</span>
-    <span class="n">registry</span><span class="o">.</span><span class="n">add_behaviours</span><span class="p">(</span><span class="n">Notification</span><span class="p">,</span> <span class="n">NotificationLoggingBehaviour</span><span class="p">())</span>
-    <span class="n">registry</span><span class="o">.</span><span class="n">add_behaviours</span><span class="p">(</span><span class="n">AddPost</span><span class="p">,</span> <span class="n">AddPostLoggingBehaviour</span><span class="p">())</span>
-    <span class="n">registry</span><span class="o">.</span><span class="n">add_behaviours</span><span class="p">(</span><span class="n">PostAdded</span><span class="p">,</span> <span class="n">PostAddedLoggingBehaviour</span><span class="p">())</span>
+    <span class="c1"># 1. AuthenticationCheckBehavior</span>
+    <span class="c1"># 2. AddToEventStoreBehavior</span>
+    <span class="c1"># 3. AddPostValidationBehavior</span>
+    <span class="c1"># 4. PostAddedEmailBehavior</span>
+    <span class="n">registry</span><span class="o">.</span><span class="n">add_pipeline_behaviors</span><span class="p">(</span><span class="n">Request</span><span class="p">,</span> <span class="n">AuthenticationCheckBehavior</span><span class="p">)</span>
+    <span class="n">registry</span><span class="o">.</span><span class="n">add_pipeline_behaviors</span><span class="p">(</span><span class="n">Notification</span><span class="p">,</span> <span class="n">AddToEventStoreBehavior</span><span class="p">)</span>
+    <span class="n">registry</span><span class="o">.</span><span class="n">add_pipeline_behaviors</span><span class="p">(</span><span class="n">AddPost</span><span class="p">,</span> <span class="n">AddPostValidationBehavior</span><span class="p">)</span>
+    <span class="n">registry</span><span class="o">.</span><span class="n">add_pipeline_behaviors</span><span class="p">(</span><span class="n">PostAdded</span><span class="p">,</span> <span class="n">PostAddedEmailBehavior</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">registry</span>
 </code></pre></div>
@@ -662,32 +730,24 @@
 3. Within each category (global/specific), behaviors execute in the order they were registered
 4. For a single request/notification, all applicable behaviors form a chain in this order</p>
 <p>Example of execution flow for an <code>AddPost</code> request:
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">build_registry</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">PipelineBehaviourRegistry</span><span class="p">:</span>
-    <span class="n">registry</span> <span class="o">=</span> <span class="n">PipelineBehaviourRegistry</span><span class="p">()</span>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">provide_registry</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Registry</span><span class="p">:</span>
+    <span class="n">registry</span> <span class="o">=</span> <span class="n">Registry</span><span class="p">()</span>
 
-    <span class="n">registry</span><span class="o">.</span><span class="n">add_behaviours</span><span class="p">(</span><span class="n">Request</span><span class="p">,</span> <span class="n">RequestLoggingBehaviour</span><span class="p">())</span>
-    <span class="n">registry</span><span class="o">.</span><span class="n">add_behaviours</span><span class="p">(</span>
-        <span class="n">AddPost</span><span class="p">,</span> 
-        <span class="n">ValidationBehaviour</span><span class="p">(),</span> 
-        <span class="n">MetricsBehaviour</span><span class="p">(),</span>
-    <span class="p">)</span>
+    <span class="n">registry</span><span class="o">.</span><span class="n">add_behaviors</span><span class="p">(</span><span class="n">Request</span><span class="p">,</span> <span class="n">RequestLoggingBehavior</span><span class="p">)</span>
+    <span class="n">registry</span><span class="o">.</span><span class="n">add_behaviors</span><span class="p">(</span><span class="n">AddPost</span><span class="p">,</span> <span class="n">ValidationBehavior</span><span class="p">,</span> <span class="n">MetricsBehavior</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">registry</span>
 
 <span class="c1"># Execution sequence for AddPost request:</span>
-<span class="c1"># 1. RequestLoggingBehaviour</span>
-<span class="c1"># 2. ValidationBehaviour</span>
-<span class="c1"># 3. MetricsBehaviour</span>
+<span class="c1"># 1. RequestLoggingBehavior</span>
+<span class="c1"># 2. ValidationBehavior</span>
+<span class="c1"># 3. MetricsBehavior</span>
 <span class="c1"># 4. Actual AddPost handler</span>
 </code></pre></div></p>
-<p>Configure the IoC container:
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">build_container</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Container</span><span class="p">:</span>
-    <span class="c1"># ...</span>
-    <span class="n">main_provider</span><span class="o">.</span><span class="n">provide</span><span class="p">(</span><span class="n">build_registry</span><span class="p">)</span>
-    <span class="c1"># Note: The Dispatcher depends on PipelineBehaviourRegistry.</span>
-    <span class="c1"># If you&#39;re not using pipeline behaviors, register PipelineBehaviourRegistry directly:</span>
-    <span class="c1"># main_provider.provide(PipelineBehaviourRegistry)</span>
-    <span class="c1"># ...</span>
+<p>Add to your IoC Container:
+<div class="highlight"><pre><span></span><code><span class="c1"># ...</span>
+<span class="n">container</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">Registry</span><span class="p">,</span> <span class="n">provide_registry</span><span class="p">)</span>
+<span class="c1"># ...</span>
 </code></pre></div></p>
 <h3 id="benefits-of-pipeline-behaviors">Benefits of Pipeline Behaviors</h3>
 <p>Pipeline behaviors solve several common issues:

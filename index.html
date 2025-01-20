@@ -14,7 +14,7 @@
       
       
       
-        <link rel="next" href="installation/">
+        <link rel="next" href="core-concepts/requests-and-handlers/">
       
       
       <link rel="icon" href="assets/images/favicon.png">
@@ -76,7 +76,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#key-features" class="md-skip">
+        <a href="#installation" class="md-skip">
           Skip to content
         </a>
       
@@ -297,9 +297,18 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Installation
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#key-features" class="md-nav__link">
     <span class="md-ellipsis">
-      Key Features
+      ✨ Key Features
     </span>
   </a>
   
@@ -319,26 +328,6 @@
   
   
   
-    <li class="md-nav__item">
-      <a href="installation/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Installation
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
     
     
     
@@ -347,10 +336,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
         
           
-          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
             
   
   <span class="md-ellipsis">
@@ -361,8 +350,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_3">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
             <span class="md-nav__icon md-icon"></span>
             Core concepts
           </label>
@@ -431,6 +420,48 @@
 
               
             
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Resolvers
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Resolvers
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
               
                 
   
@@ -438,11 +469,53 @@
   
   
     <li class="md-nav__item">
-      <a href="core-concepts/ioc-integration/" class="md-nav__link">
+      <a href="resolvers/resolvers-in-bazario/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Ioc integration
+    Resolvers in bazario
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="resolvers/dishka-resolver/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Dishka resolver
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="resolvers/punq-resolver/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Punq resolver
   </span>
   
 
@@ -504,9 +577,18 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Installation
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#key-features" class="md-nav__link">
     <span class="md-ellipsis">
-      Key Features
+      ✨ Key Features
     </span>
   </a>
   
@@ -533,17 +615,21 @@
   <h1>Introduction</h1>
 
 <p><strong>Bazario</strong> is a lightweight handler routing library designed for modular applications. It simplifies development by providing centralized mechanisms for handling requests (Requests) and events (Notifications), with efficient handler routing and support for both synchronous and asynchronous operations.</p>
-<h3 id="key-features">Key Features</h3>
+<h2 id="installation">Installation</h2>
+<p>Bazario is available on <a href="https://pypi.org/project/bazario/">PyPI</a></p>
+<div class="highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>bazario
+</code></pre></div>
+<h2 id="key-features">✨ Key Features</h2>
 <ul>
-<li><strong>Request Handling</strong>: A streamlined mechanism for handling requests with clear separation of responsibilities</li>
-<li><strong>Event Handling</strong>: Unified event publication and handling (Notifications) supporting both standard and async/await syntax while maintaining efficient in-memory processing</li>
-<li><strong>Modular Architecture</strong>: Clear separation of business logic, ports, and infrastructure, simplifying development and maintenance</li>
-<li><strong>IoC Container Integration</strong>: Support for DI frameworks like Dishka, enabling easy dependency management and modular configuration</li>
-<li><strong>Testability</strong>: Use of protocols (Protocol) to easily mock infrastructure adapters for unit testing</li>
-<li><strong>Asynchronous Support</strong>: The <strong>asyncio</strong> package enables asynchronous handling, providing flexibility for applications requiring async logic</li>
-<li><strong>Dependency Separation</strong>: Controllers delegate handler resolution to <strong>Bazario</strong>, focusing solely on request parsing. This improves separation of responsibilities and enhances code maintainability</li>
-<li><strong>Pipeline Behaviors</strong>: Flexible middleware system for implementing cross-cutting concerns like logging, validation, and error handling without modifying handler logic</li>
-<li><strong>Configurable Processing Chain</strong>: Ability to create custom processing pipelines for both requests and notifications, enabling sophisticated pre- and post-processing workflows</li>
+<li><strong>Request Handling</strong>: A streamlined mechanism for handling requests with clear separation of responsibilities.</li>
+<li><strong>Event Handling</strong>: Unified event publication and handling (Notifications) supporting both standard and async/await syntax while maintaining efficient in-memory processing.</li>
+<li><strong>Modular Architecture</strong>: Clear separation of business logic, ports, and infrastructure, simplifying development and maintenance.</li>
+<li><strong>IoC Container Integration</strong>: Support for DI frameworks enabling easy dependency management and modular configuration.</li>
+<li><strong>Testability</strong>: Use of abstractions to easily mock infrastructure adapters for unit testing.</li>
+<li><strong>Asynchronous Support</strong>: The <strong>bazario.asyncio</strong> package enables asynchronous handling, providing flexibility for applications requiring async logic.</li>
+<li><strong>Dependency Separation</strong>: Controllers delegate handler resolution to <strong>Bazario</strong>, focusing solely on request parsing. This improves separation of responsibilities and enhances code maintainability.</li>
+<li><strong>Pipeline Behaviors</strong>: Flexible middleware system for implementing cross-cutting concerns like logging, validation, and error handling without modifying handler logic.</li>
+<li><strong>Configurable Processing Chain</strong>: Ability to create custom processing pipelines for both requests and notifications, enabling sophisticated pre- and post-processing workflows.</li>
 </ul>
 <p>Bazario is optimized for synchronous in-memory processing and handler routing, making it ideal for applications requiring modularity, simplicity, and flexible handler management.</p>
 

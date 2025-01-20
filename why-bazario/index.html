@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://chessenjoyer17.github.io/bazario/why-bazario/">
       
       
-        <link rel="prev" href="../core-concepts/ioc-integration/">
+        <link rel="prev" href="../resolvers/punq-resolver/">
       
       
       
@@ -269,26 +269,6 @@
   
   
   
-    <li class="md-nav__item">
-      <a href="../installation/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Installation
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
     
     
     
@@ -297,10 +277,10 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
         
           
-          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
             
   
   <span class="md-ellipsis">
@@ -311,8 +291,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_3">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
             <span class="md-nav__icon md-icon"></span>
             Core concepts
           </label>
@@ -381,6 +361,48 @@
 
               
             
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Resolvers
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Resolvers
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
               
                 
   
@@ -388,11 +410,53 @@
   
   
     <li class="md-nav__item">
-      <a href="../core-concepts/ioc-integration/" class="md-nav__link">
+      <a href="../resolvers/resolvers-in-bazario/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Ioc integration
+    Resolvers in bazario
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../resolvers/dishka-resolver/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Dishka resolver
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../resolvers/punq-resolver/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Punq resolver
   </span>
   
 
@@ -476,40 +540,44 @@
 <p>Bazario addresses several limitations found in alternative libraries:</p>
 <ol>
 <li>
-<p><strong>Flexible Handler Support</strong>: Supports both synchronous and asynchronous handlers through the <code>asyncio</code> package.</p>
+<p><strong>Lack of support for both synchronous and asynchronous handlers</strong>: Most libraries require choosing between synchronous or asynchronous processing, limiting flexibility.<br />
+<strong>Bazario</strong> addresses this issue by supporting both synchronous and asynchronous handling through the <strong>bazario.asyncio</strong> package for async operations. This allows the library to be used in various types of applications without limiting the developer’s choice of processing type.</p>
 </li>
 <li>
-<p><strong>IoC Container Control</strong>: Gives developers full control over container lifecycle and scope creation.</p>
+<p><strong>Control over IoC container and scope creation</strong>: This is often handled by the library itself, leading to bugs and side effects. It can also reduce performance, as multiple parallel containers could be created.<br />
+<strong>Bazario</strong> allows the client to control the IoC container and scope creation, giving full control over the container’s lifecycle and preventing performance issues or side effects caused by redundant container instances.</p>
 </li>
 <li>
-<p><strong>Simplified Registration</strong>: Eliminates code duplication by registering handlers directly in the IoC container.</p>
+<p><strong>Lack of modularity</strong>: In other libraries, integrating different DI frameworks is challenging without rewriting significant portions of the logic.<br />
+<strong>Bazario</strong> solves this problem by utilizing a modular resolvers system, allowing easy integration with any DI framework. This provides the ability to use <strong>Bazario</strong> in different environments without being tied to a specific DI framework.</p>
 </li>
 <li>
-<p><strong>Enhanced Modularity</strong>: Features a plugin system for easy integration with various DI frameworks.</p>
+<p><strong>Violation of SOLID principles</strong>: Some libraries do not fully adhere to SOLID principles, making the code more complex and harder to maintain.<br />
+<strong>Bazario</strong> fully adheres to SOLID principles, particularly ISP (Interface Segregation Principle). For example, instead of tightly coupling everything to a Dispatcher, <strong>Bazario</strong> separates responsibilities by introducing the <strong>Publisher</strong> protocol for event publication and the <strong>Sender</strong> protocol for sending requests, leading to better responsibility separation and reduced unnecessary dependencies.</p>
 </li>
 <li>
-<p><strong>SOLID Compliance</strong>: Strictly adheres to SOLID principles, particularly the Interface Segregation Principle.</p>
+<p><strong>Dependency Separation</strong>: In traditional approaches, controllers often handle both request parsing and handler resolution, which increases their complexity and reduces testability.<br />
+<strong>Bazario</strong> addresses this by delegating all handler routing responsibilities to <strong>Bazario</strong>, allowing controllers to focus solely on parsing requests. This improves responsibility separation and makes controller code cleaner and more testable.</p>
 </li>
 <li>
-<p><strong>Clean Separation</strong>: Controllers focus on request parsing while Bazario handles routing, improving code organization and testability.</p>
-</li>
-<li>
-<p><strong>Powerful Pipeline System</strong>: Offers a sophisticated behavior pipeline architecture that allows developers to:</p>
+<p><strong>Powerful Pipeline System</strong>: Many libraries lack an effective way to implement cross-cutting concerns like logging, validation, or error handling, often forcing developers to modify the core logic of their handlers. <strong>Bazario</strong> addresses this by offering a sophisticated behavior pipeline system that allows developers to:</p>
 <ul>
-<li>Implement cross-cutting concerns without modifying existing code.</li>
-<li>Create reusable middleware components.</li>
-<li>Configure different processing chains for different types of requests and notifications.</li>
-<li>Add monitoring, logging, and error handling in a centralized way.</li>
+<li>Implement cross-cutting concerns without modifying existing handler logic.</li>
+<li>Create reusable middleware components that can be plugged into various parts of the system.</li>
+<li>Configure different processing chains for various types of requests and notifications, ensuring flexibility.</li>
+<li>Add centralized monitoring, logging, and error handling, ensuring consistency across the application without cluttering the core logic.</li>
 </ul>
+<p>This powerful pipeline system allows developers to manage complex workflows efficiently and with minimal code duplication.</p>
 </li>
 <li>
-<p><strong>Flexible Processing Control</strong>: Enables fine-grained control over request and notification processing through:</p>
+<p><strong>Flexible Processing Control</strong>: In many libraries, developers face challenges when trying to introduce new processing requirements, especially when they require changing existing handler logic. This can lead to code bloat and reduced maintainability. <strong>Bazario</strong> offers flexible control over how requests and notifications are processed through:</p>
 <ul>
-<li>Custom pipeline behaviors for specific request or notification types.</li>
-<li>Global behaviors for all requests or notifications.</li>
-<li>Configurable execution order of pipeline behaviors.</li>
-<li>Easy integration of new processing requirements without changing handler logic.</li>
+<li>Custom pipeline behaviors that can be configured for specific types of requests or notifications, giving developers granular control.</li>
+<li>Global behaviors that apply to all requests or notifications, making it easier to manage common concerns like logging or security.</li>
+<li>Configurable execution order of pipeline behaviors, allowing developers to define precisely when and how each behavior should execute.</li>
+<li>Easy integration of new processing requirements without altering existing handler logic, ensuring backward compatibility and scalability.</li>
 </ul>
+<p>This level of flexibility ensures that Bazario can adapt to evolving requirements without compromising the maintainability of the codebase.</p>
 </li>
 </ol>
 

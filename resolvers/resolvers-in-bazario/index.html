@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://chessenjoyer17.github.io/bazario/core-concepts/requests-and-handlers/">
+        <link rel="canonical" href="https://chessenjoyer17.github.io/bazario/resolvers/resolvers-in-bazario/">
       
       
-        <link rel="prev" href="../..">
+        <link rel="prev" href="../../core-concepts/pipeline-behaviors/">
       
       
-        <link rel="next" href="../notifications-and-events/">
+        <link rel="next" href="../dishka-resolver/">
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
@@ -24,7 +24,7 @@
     
     
       
-        <title>Requests and handlers - Bazario</title>
+        <title>Resolvers in bazario - Bazario</title>
       
     
     
@@ -77,6 +77,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#key-points" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -109,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Requests and handlers
+              Resolvers in bazario
             
           </span>
         </div>
@@ -269,19 +274,17 @@
       
   
   
-    
   
   
-  
     
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
         
           
           <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
@@ -295,7 +298,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2">
             <span class="md-nav__icon md-icon"></span>
             Core concepts
@@ -306,17 +309,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../core-concepts/requests-and-handlers/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -325,7 +321,6 @@
   
 
       </a>
-      
     </li>
   
 
@@ -338,7 +333,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../notifications-and-events/" class="md-nav__link">
+      <a href="../../core-concepts/notifications-and-events/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -359,7 +354,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../pipeline-behaviors/" class="md-nav__link">
+      <a href="../../core-concepts/pipeline-behaviors/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -384,17 +379,19 @@
       
   
   
+    
   
   
+  
     
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
         
           
           <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
@@ -408,7 +405,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             Resolvers
@@ -419,10 +416,28 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../resolvers/resolvers-in-bazario/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Resolvers in bazario
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -431,6 +446,33 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#key-points" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key Points:
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -443,7 +485,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../resolvers/dishka-resolver/" class="md-nav__link">
+      <a href="../dishka-resolver/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -464,7 +506,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../resolvers/punq-resolver/" class="md-nav__link">
+      <a href="../punq-resolver/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -523,6 +565,23 @@
   
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#key-points" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key Points:
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -539,64 +598,16 @@
   
 
 
-  <h1>Requests and handlers</h1>
+  <h1>Resolvers in bazario</h1>
 
-<p><strong>Requests</strong> in Bazario represent actions that return a result. They are used to perform operations that require a return value, such as creating, reading, or updating data.</p>
-<p><strong>Request Handlers</strong> are responsible for processing requests and generating the corresponding results.</p>
-<p>Here's an example of defining a request and its handler:
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">bazario</span> <span class="kn">import</span> <span class="n">Request</span><span class="p">,</span> <span class="n">RequestHandler</span>
-
-<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="k">class</span> <span class="nc">AddPost</span><span class="p">(</span><span class="n">Request</span><span class="p">[</span><span class="nb">int</span><span class="p">]):</span>
-    <span class="n">title</span><span class="p">:</span> <span class="nb">str</span>
-    <span class="n">content</span><span class="p">:</span> <span class="nb">str</span>
-
-<span class="k">class</span> <span class="nc">AddPostHandler</span><span class="p">(</span><span class="n">RequestHandler</span><span class="p">[</span><span class="n">AddPost</span><span class="p">,</span> <span class="nb">int</span><span class="p">]):</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">post_factory</span><span class="p">:</span> <span class="n">PostFactory</span><span class="p">,</span>
-        <span class="n">user_provider</span><span class="p">:</span> <span class="n">UserProvider</span><span class="p">,</span>
-        <span class="n">post_repository</span><span class="p">:</span> <span class="n">PostRepository</span><span class="p">,</span>
-        <span class="n">transaction_commiter</span><span class="p">:</span> <span class="n">TransactionCommiter</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_post_factory</span> <span class="o">=</span> <span class="n">post_factory</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_user_provider</span> <span class="o">=</span> <span class="n">user_provider</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_post_repository</span> <span class="o">=</span> <span class="n">post_repository</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_transaction_commiter</span> <span class="o">=</span> <span class="n">transaction_commiter</span>
-
-    <span class="k">def</span> <span class="nf">handle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">:</span> <span class="n">AddPost</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-        <span class="n">user_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user_provider</span><span class="o">.</span><span class="n">get_id</span><span class="p">()</span>
-        <span class="n">new_post</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_post_factory</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
-            <span class="n">title</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">title</span><span class="p">,</span>
-            <span class="n">content</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">content</span><span class="p">,</span>
-            <span class="n">owner_id</span><span class="o">=</span><span class="n">user_id</span><span class="p">,</span>
-        <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_post_repository</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">new_post</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_transaction_commiter</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
-
-        <span class="k">return</span> <span class="n">new_post</span><span class="o">.</span><span class="n">id</span>
-</code></pre></div></p>
-<p>Add handlers to <code>Registry</code>:
-<div class="highlight"><pre><span></span><code><span class="c1"># ...</span>
-<span class="n">registry</span><span class="o">.</span><span class="n">add_request_handler</span><span class="p">(</span><span class="n">AddPost</span><span class="p">,</span> <span class="n">AddPostHandler</span><span class="p">)</span>
-<span class="c1"># ...</span>
-</code></pre></div></p>
-<p>Add handlers to your IoC container:
-<div class="highlight"><pre><span></span><code><span class="c1"># ...</span>
-<span class="n">container</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">AddPostHandler</span><span class="p">)</span>
-<span class="c1"># ...</span>
-</code></pre></div>
-Finally, you can send requests:
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">bazario</span> <span class="kn">import</span> <span class="n">Sender</span>
-
-<span class="k">def</span> <span class="nf">controller</span><span class="p">(</span><span class="n">sender</span><span class="p">:</span> <span class="n">Sender</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="n">request</span> <span class="o">=</span> <span class="n">AddPost</span><span class="p">(</span>
-        <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Sicilian Defense: Countering e4!&quot;</span><span class="p">,</span>
-        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;An in-depth analysis of the Sicilian Defense: e4-c5!?&quot;</span><span class="p">,</span>
-    <span class="p">)</span>
-    <span class="n">post_id</span> <span class="o">=</span> <span class="n">sender</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Post with ID </span><span class="si">{</span><span class="n">post_id</span><span class="si">}</span><span class="s2"> was added&quot;</span><span class="p">)</span>
-</code></pre></div></p>
+<p>In <strong>Bazario</strong>, <strong>Resolvers</strong> are simply wrappers around the client's IoC (Inversion of Control) container. They are used by the framework to resolve handlers and behaviors, allowing for independence from any specific container.</p>
+<h3 id="key-points">Key Points:</h3>
+<ul>
+<li><strong>Resolvers</strong> abstract the dependency resolution process, enabling Bazario to work with different IoC containers.</li>
+<li>They help in resolving <strong>Request Handlers</strong> and <strong>Pipeline Behaviors</strong> without being tied to a particular container.</li>
+<li>This flexibility allows you to use any IoC container of your choice, while Bazario handles the resolution behind the scenes.</li>
+</ul>
+<p>Resolvers make Bazario modular, decoupling it from the underlying IoC container, and ensuring a consistent and flexible integration.</p>
 
 
 

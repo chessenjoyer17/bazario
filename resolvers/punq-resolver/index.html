@@ -10,10 +10,10 @@
       
       
       
-        <link rel="canonical" href="https://chessenjoyer17.github.io/bazario/core-concepts/ioc-integration/">
+        <link rel="canonical" href="https://chessenjoyer17.github.io/bazario/resolvers/punq-resolver/">
       
       
-        <link rel="prev" href="../pipeline-behaviors/">
+        <link rel="prev" href="../dishka-resolver/">
       
       
         <link rel="next" href="../../why-bazario/">
@@ -24,7 +24,7 @@
     
     
       
-        <title>Ioc integration - Bazario</title>
+        <title>Punq resolver - Bazario</title>
       
     
     
@@ -77,6 +77,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#step-1-install-bazario-with-punq-provider" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -109,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Ioc integration
+              Punq resolver
             
           </span>
         </div>
@@ -271,16 +276,101 @@
   
   
   
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Core concepts
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Core concepts
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
     <li class="md-nav__item">
-      <a href="../../installation/" class="md-nav__link">
+      <a href="../../core-concepts/requests-and-handlers/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Installation
+    Requests and handlers
   </span>
   
 
       </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../core-concepts/notifications-and-events/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Notifications and events
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../core-concepts/pipeline-behaviors/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Pipeline Behaviors
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
     </li>
   
 
@@ -308,7 +398,7 @@
             
   
   <span class="md-ellipsis">
-    Core concepts
+    Resolvers
   </span>
   
 
@@ -318,7 +408,7 @@
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
-            Core concepts
+            Resolvers
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -329,11 +419,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../requests-and-handlers/" class="md-nav__link">
+      <a href="../resolvers-in-bazario/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Requests and handlers
+    Resolvers in bazario
   </span>
   
 
@@ -350,32 +440,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../notifications-and-events/" class="md-nav__link">
+      <a href="../dishka-resolver/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Notifications and events
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../pipeline-behaviors/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Pipeline Behaviors
+    Dishka resolver
   </span>
   
 
@@ -399,15 +468,70 @@
       
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Punq resolver
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
-    Ioc integration
+    Punq resolver
   </span>
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#step-1-install-bazario-with-punq-provider" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 1: Install bazario with punq provider
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-2-setup-bazario-componentshandlers-behaviors-etc-and-container" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 2: Setup bazario components(handlers, behaviors, etc) and container
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-3-use-bazario-with-punq" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 3: Use bazario with punq
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -459,6 +583,41 @@
   
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#step-1-install-bazario-with-punq-provider" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 1: Install bazario with punq provider
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-2-setup-bazario-componentshandlers-behaviors-etc-and-container" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 2: Setup bazario components(handlers, behaviors, etc) and container
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-3-use-bazario-with-punq" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 3: Use bazario with punq
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -475,27 +634,53 @@
   
 
 
-  <h1>Ioc integration</h1>
+  <h1>Punq resolver</h1>
 
-<p>This example demonstrates how to configure your dependency injection (DI) framework (Dishka in this case) to work with Bazario:
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">bazario</span> <span class="kn">import</span> <span class="n">Dispatcher</span><span class="p">,</span> <span class="n">PipelineBehaviourRegistry</span>
-<span class="kn">from</span> <span class="nn">bazario.plugins.dishka</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">DishkaHandlerFinder</span><span class="p">,</span>
-    <span class="n">DishkaHandlerResolver</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="kn">from</span> <span class="nn">dishka</span> <span class="kn">import</span> <span class="n">Provider</span><span class="p">,</span> <span class="n">Scope</span><span class="p">,</span> <span class="n">make_container</span>
+<h3 id="step-1-install-bazario-with-punq-provider">Step 1: Install bazario with punq provider</h3>
+<div class="highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span><span class="s1">&#39;bazario[punq]&#39;</span>
+</code></pre></div>
+<h3 id="step-2-setup-bazario-componentshandlers-behaviors-etc-and-container">Step 2: Setup bazario components(handlers, behaviors, etc) and container</h3>
+<div class="highlight"><pre><span></span><code><span class="c1"># bootstap/ioc.py</span>
+<span class="kn">from</span> <span class="nn">bazario</span> <span class="kn">import</span> <span class="n">Dispatcher</span><span class="p">,</span> <span class="n">Resolver</span>
+<span class="kn">from</span> <span class="nn">bazario.resolvers.punq</span> <span class="kn">import</span> <span class="n">PunqResolver</span>
 
-<span class="k">def</span> <span class="nf">build_container</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Container</span><span class="p">:</span>
-    <span class="n">main_provider</span> <span class="o">=</span> <span class="n">Provider</span><span class="p">(</span><span class="n">scope</span><span class="o">=</span><span class="n">Scope</span><span class="o">.</span><span class="n">REQUEST</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">punq</span> <span class="kn">import</span> <span class="n">Container</span>
 
-    <span class="n">main_provider</span><span class="o">.</span><span class="n">provide</span><span class="p">(</span><span class="n">AddPostHandler</span><span class="p">)</span>
-    <span class="n">main_provider</span><span class="o">.</span><span class="n">provide</span><span class="p">(</span><span class="n">WithParents</span><span class="p">[</span><span class="n">Dispatcher</span><span class="p">])</span>
-    <span class="n">main_provider</span><span class="o">.</span><span class="n">provide</span><span class="p">(</span><span class="n">WithParents</span><span class="p">[</span><span class="n">DishkaHandlerFinder</span><span class="p">])</span>
-    <span class="n">main_provider</span><span class="o">.</span><span class="n">provide</span><span class="p">(</span><span class="n">WithParents</span><span class="p">[</span><span class="n">DishkaHandlerResolver</span><span class="p">])</span>
-    <span class="c1"># Additional registrations (PostRepository, TransactionCommiter, etc.)</span>
+<span class="k">def</span> <span class="nf">provide_registry</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Registry</span><span class="p">:</span>
+    <span class="n">registry</span> <span class="o">=</span> <span class="n">Registry</span><span class="p">()</span>
+    <span class="n">registry</span><span class="o">.</span><span class="n">add_request_handler</span><span class="p">(</span><span class="n">CreateUserRequest</span><span class="p">,</span> <span class="n">CreateUserHandler</span><span class="p">)</span>
+    <span class="n">registry</span><span class="o">.</span><span class="n">add_notification_handlers</span><span class="p">(</span><span class="n">UserCreatedNotification</span><span class="p">,</span> <span class="n">UserCreatedHandler</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">registry</span>
 
-    <span class="k">return</span> <span class="n">make_container</span><span class="p">(</span><span class="n">main_provider</span><span class="p">)</span>
-</code></pre></div></p>
+
+<span class="k">def</span> <span class="nf">provide_container</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Container</span><span class="p">:</span>
+    <span class="n">container</span> <span class="o">=</span> <span class="n">Container</span><span class="p">()</span>
+
+    <span class="n">container</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">Dispatcher</span><span class="p">)</span>
+    <span class="n">container</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">Sender</span><span class="p">,</span> <span class="n">Dispatcher</span><span class="p">)</span>
+    <span class="n">container</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">Publisher</span><span class="p">,</span> <span class="n">Dispatcher</span><span class="p">)</span>
+    <span class="n">container</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">Resolver</span><span class="p">,</span> <span class="n">PunqResolver</span><span class="p">)</span>
+    <span class="n">container</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">Registry</span><span class="p">,</span> <span class="n">provide_registry</span><span class="p">)</span>
+    <span class="n">container</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">CreateUserHandler</span><span class="p">)</span>
+    <span class="n">container</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">UserCreatedHandler</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">container</span>
+</code></pre></div>
+<h3 id="step-3-use-bazario-with-punq">Step 3: Use bazario with punq</h3>
+<div class="highlight"><pre><span></span><code><span class="c1"># presentation/rest/users.py</span>
+<span class="kn">from</span> <span class="nn">your_framework</span> <span class="kn">import</span> <span class="n">post</span><span class="p">,</span> <span class="n">inject</span>
+<span class="kn">from</span> <span class="nn">bazario</span> <span class="kn">import</span> <span class="n">Sender</span><span class="p">,</span> <span class="n">Publisher</span>
+
+<span class="kn">from</span> <span class="nn">application.requests.create_user</span> <span class="kn">import</span> <span class="n">CreateUserRequest</span>
+<span class="kn">from</span> <span class="nn">application.notifications.user_created</span> <span class="kn">import</span> <span class="n">UserCreatedNotification</span>
+
+<span class="nd">@post</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
+<span class="nd">@inject</span>
+<span class="k">def</span> <span class="nf">create_user</span><span class="p">(</span><span class="n">sender</span><span class="p">:</span> <span class="n">Sender</span><span class="p">,</span> <span class="n">publisher</span><span class="p">:</span> <span class="n">Publisher</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">sender</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">CreateUserRequest</span><span class="p">(</span><span class="s2">&quot;john_doe&quot;</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>  <span class="c1"># Output: User john_doe created!</span>
+    <span class="n">publisher</span><span class="o">.</span><span class="n">publish</span><span class="p">(</span><span class="n">UserCreatedNotification</span><span class="p">(</span><span class="s2">&quot;123&quot;</span><span class="p">))</span>  <span class="c1"># Output: Notification: User 123 was created.</span>
+</code></pre></div>
 
 
 
