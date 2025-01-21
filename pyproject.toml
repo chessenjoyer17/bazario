@@ -10,7 +10,7 @@ where = ["src"]
 
 [project]
 name = "bazario"
-version = "0.3.0"
+version = "0.4.0"
 readme = "README.md"
 authors = [{ name = "Alim Abrekov", email = "chessinmind17@yandex.ru" }]
 description = "Lightweight handler routing library for modular apps."

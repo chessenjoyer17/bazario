@@ -51,7 +51,12 @@ class Registry:
         self,
         notification_type: type[Notification],
     ) -> list[type[NotificationHandler]]:
-        return self.notification_handlers.get(notification_type, [])
+        return [
+            handler
+            for notification, handlers in self.notification_handlers.items()
+            for handler in handlers
+            if issubclass(notification_type, notification)
+        ]
 
     def get_pipeline_behaviors(
         self,
