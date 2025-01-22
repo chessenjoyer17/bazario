@@ -1,4 +1,4 @@
-from collections.abc import Reversible
+from collections.abc import Iterable
 from typing import Any
 
 from bazario.abc.handler import NotificationHandler, RequestHandler
@@ -10,11 +10,11 @@ from bazario.abc.pipeline_behavior import (
 
 def build_pipeline_behaviors_chain(
     handler: RequestHandler | NotificationHandler,
-    behaviors: Reversible[PipelineBehavior],
+    behaviors: Iterable[PipelineBehavior],
 ) -> HandleNext:
     current_behavior: HandleNext = handler.handle
 
-    for behavior in reversed(behaviors):
+    for behavior in behaviors:
         current_behavior = _wrap_with_behavior(behavior, current_behavior)
 
     return current_behavior
