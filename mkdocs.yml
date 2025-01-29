@@ -1,58 +1,113 @@
-site_name: "Bazario"
-site_description: Bazario is a lightweight handler routing library designed for modular applications.
-site_url: https://chessenjoyer17.github.io/bazario/
-
-theme:
-  name: "material"
-  features:
-    - navigation.instant
-  palette:
-    - scheme: "default"
-      primary: "red"
-      accent: "amber"
-      media: "(prefers-color-scheme: light)"
-      toggle:
-        icon: "material/weather-night"
-        name: "Switch to dark mode"
-    - scheme: "slate"
-      primary: "red"
-      accent: "amber"
-      media: "(prefers-color-scheme: dark)"
-      toggle:
-        icon: "material/weather-sunny"
-        name: "Switch to light mode"
+site_name: bazario
 
 repo_name: chessenjoyer17/bazario
 repo_url: https://github.com/chessenjoyer17/bazario
 
-nav:
-  - Introduction: index.md
-  - Core concepts:
-    - Requests and handlers: core-concepts/requests-and-handlers.md
-    - Notifications and events: core-concepts/notifications-and-events.md
-    - Pipeline Behaviors: core-concepts/pipeline-behaviors.md
-  - Resolvers:
-    - Resolvers in bazario: resolvers/resolvers-in-bazario.md
-    - Dishka resolver: resolvers/dishka-resolver.md
-    - Punq resolver: resolvers/punq-resolver.md
-  - Why bazario?: why-bazario.md
+theme:
+  name: material
+  language: en
+  features:
+    - navigation.instant
+    - navigation.tracking
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.sections
+    - navigation.expand
+    - navigation.indexes
+    - navigation.top
+    - toc.integrate
+    - search.suggest
+    - search.highlight
+    - search.share
+    - search.modal
+    - header.autohide
+    - announce.dismiss
+  palette:
+    - scheme: slate
+      primary: deep purple
+      accent: purple
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+    - scheme: default
+      primary: deep purple
+      accent: purple
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+  font:
+    text: Plus Jakarta Sans
+    code: JetBrains Mono
+  icon:
+    repo: material/github
+    logo: material/book-open-variant
+    admonition:
+      note: octicons/tag-16
+  favicon: images/favicon.ico
 
 markdown_extensions:
   - admonition
-  - pymdownx.highlight
-  - pymdownx.snippets
-  - pymdownx.superfences
-  - pymdownx.emoji:
-      emoji_index: !!python/name:material.extensions.emoji.twemoji
-      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.details
   - pymdownx.superfences:
       custom_fences:
         - name: mermaid
           class: mermaid
           format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
   - attr_list
   - md_in_html
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
+  - attr_list
+  - md_in_html
+  - def_list
+  - tables
+  - footnotes
+  - pymdownx.critic
+  - pymdownx.caret
+  - pymdownx.keys
+  - pymdownx.mark
+  - pymdownx.tilde
+  - pymdownx.tabbed:
+      alternate_style: true
+
+nav:
+  - Home:
+      - Introduction: index.md
+      - Why bazario: home/whybazario.md
+  - User Guide:
+      - Installation: user-guide/installation.md
+  - Usage:
+      - Requests and handles: usage/requests_and_handlers.md
+      - Notifications and handlers: usage/notifications_and_handlers.md
+      - Pipeline Behabiours: usage/pipelines.md
+      - Resolvers:
+          - Resolvers in bazario: usage/resolvers_in_bazario.md
+          - Dishka resolver: usage/dishka_resolver.md
+          - Punq resolver: usage/punq_resolver.md
+  - Contributing:
+      - Development: contributing/development.md
+      - Guidelines: contributing/guideliness.md
 
 plugins:
-  - mkdocstrings
-  - search:
+  - search
+  - tags
+
+extra_css:
+  - stylesheets/extra.css
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/chessenjoyer17

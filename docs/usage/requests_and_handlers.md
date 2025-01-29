@@ -1,6 +1,14 @@
-**Requests** in Bazario represent actions that return a result. They are used to perform operations that require a return value, such as creating, reading, or updating data.
+# 🎯 Requests & Handlers Guide
 
-**Request Handlers** are responsible for processing requests and generating the corresponding results.
+> 📝 Original content preserved below
+
+---
+
+🔄 **Requests** in Bazario represent actions that return a result. They are used to perform operations that require a return value, such as creating, reading, or updating data.
+
+⚙️ **Request Handlers** are responsible for processing requests and generating the corresponding results.
+
+## 💡 Example: Defining a Request and Handler
 
 Here's an example of defining a request and its handler:
 ```python
@@ -37,20 +45,22 @@ class AddPostHandler(RequestHandler[AddPost, int]):
         return new_post.id
 ```
 
-Add handlers to `Registry`:
-``` python
+## 🔧 Setup Steps
+
+1️⃣ Add handlers to Registry:
+
+```python
 # ...
 registry.add_request_handler(AddPost, AddPostHandler)
 # ...
 ```
-
-Add handlers to your IoC container:
-``` python
+2️⃣ Add handlers to your IoC container:
+```python
 # ...
 container.register(AddPostHandler)
 # ...
 ```
-Finally, you can send requests:
+3️⃣ Send requests:
 ```python
 from bazario import Sender
 
@@ -60,5 +70,15 @@ def controller(sender: Sender) -> None:
         description="An in-depth analysis of the Sicilian Defense: e4-c5!?",
     )
     post_id = sender.send(request)
-    print(f"Post with ID {post_id} was added")
+    print(f"Post with ID {post_id} was added ✨")
 ```
+<details>
+<summary>📚 Original Documentation (Click to expand)</summary>
+    <span style="font-size: 1.3em">
+        Requests in Bazario represent actions that return a result. They are used to perform operations that require a return value, such as creating, reading, or updating data.
+
+        Request Handlers are responsible for processing requests and generating the corresponding results.
+
+        Rest of the original content...
+    </span>
+</details>

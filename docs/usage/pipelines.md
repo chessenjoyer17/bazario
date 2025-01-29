@@ -1,6 +1,14 @@
+# 🔄 Pipeline Behaviors in Bazario
+> 🌊 Flow control and middleware magic
+
+---
+
+## 🎯 Overview
 Pipeline behaviors in **Bazario** enable pre- and post-processing logic for requests and notifications. These behaviors form a chain around the core handler logic and can modify or enhance the data flow.
 
-### Defining Pipeline Behaviors
+## 🛠️ Implementation Examples
+
+### 🔐 Authentication Check Behavior
 ```python
 from bazario import (
     PipelineBehavior,
@@ -10,23 +18,21 @@ from bazario import (
     Notification,
 )
 
-# Behavior for all requests
-from bazario import PipelineBehavior, HandleNext, Request
-
 class AuthenticationCheckBehavior(PipelineBehavior[Request, Any]):
     def __init__(self, user_provider: UserProvider) -> None:
         self._user_provider = user_provider
 
     def handle(self, request: Request, handle_next: HandleNext[Request, Any]) -> Any:
-        # Check if user is authenticated
+        # ✨ Security check
         if not self._user_provider.is_authenticated():
             raise PermissionError("User is not authenticated.")
         
-        # Proceed to the next handler or behavior
+        # 🔄 Continue to next handler
         return handle_next(request)
+```
 
-
-# Behavior for all notifications
+## 📊 Event Store Behavior
+```python
 class AddToEventStoreBehavior(PipelineBehavior[Notification, None]):
     def __init__(self, event_store: EventStore) -> None:
         self._event_store = event_store
@@ -36,54 +42,43 @@ class AddToEventStoreBehavior(PipelineBehavior[Notification, None]):
         request: Notification, 
         handle_next: HandleNext[Notification, None],
     ) -> None:
+        # 📝 Store event
         self._event_store.add(request)
+        # ➡️ Proceed to next
         return handle_next(request)
+```
 
-# Behavior specific to AddPost request
-class AddPostValidationBehavior(PipelineBehavior[AddPost, int]):
-    def handle(
-        self,
-        request: AddPost,
-        handle_next: HandleNext[AddPost, int],
-    ) -> int:
-        if not request.title:
-            raise ValidationError("Title required")
-
-        if not request.content:
-            raise ValidationError("Content required")
-
-        return handle_next(request)
-
-# Behavior specific to PostAdded notification
+## 📧 Email Notification Behavior
+```python
 class PostAddedEmailBehavior(PipelineBehavior[PostAdded, None]):
     def __init__(self, email_service: EmailService) -> None:
         self._email_service = email_service
 
     def handle(self, request: PostAdded, handle_next: HandleNext[PostAdded, None]) -> None:
-        # Send a thank-you email to the user
+        # 📨 Send email
         self._email_service.send_email(
             to_user_id=request.user_id,
             subject="Thank you for adding a post!",
             body=f"Dear User {request.user_id}, thank you for your post with ID {request.post_id}!"
         )
-        
-        # Proceed with the next behavior or handler
+        # ➡️ Continue chain
         return handle_next(request)
 ```
 
-### Registering Pipeline Behaviors
-Register your behaviors to `Registry`. The order of behavior registration determines the execution sequence - behaviors are executed in the order they are added:
+## 🔌 Registration Guide
 
+📝 Register Your Behaviors
 ```python
 from bazario import Registry
 
 def provide_registry() -> Registry:
     registry = Registry()
-    # Behaviors will execute in this order:
-    # 1. AuthenticationCheckBehavior
-    # 2. AddToEventStoreBehavior
-    # 3. AddPostValidationBehavior
-    # 4. PostAddedEmailBehavior
+    
+    # 🔄 Pipeline Execution Order:
+    # 1️⃣ Authentication Check
+    # 2️⃣ Event Store
+    # 3️⃣ Validation
+    # 4️⃣ Email Notification
     registry.add_pipeline_behaviors(Request, AuthenticationCheckBehavior)
     registry.add_pipeline_behaviors(Notification, AddToEventStoreBehavior)
     registry.add_pipeline_behaviors(AddPost, AddPostValidationBehavior)
@@ -92,13 +87,17 @@ def provide_registry() -> Registry:
     return registry
 ```
 
-The execution order follows these rules:
-1. Global behaviors (registered for base types like `Request` or `Notification`) execute first
-2. Specific behaviors (registered for concrete types like `AddPost` or `PostAdded`) execute after global ones
-3. Within each category (global/specific), behaviors execute in the order they were registered
-4. For a single request/notification, all applicable behaviors form a chain in this order
+## 🎯 Execution Flow Rules
 
-Example of execution flow for an `AddPost` request:
+- 🌍 Global First : Base type behaviors (Request/Notification) execute first
+
+- 📍 Specific Second : Concrete type behaviors follow
+
+- 📝 Order Matters : Behaviors execute in registration order
+
+- 🔄 Chain Formation : All applicable behaviors form an execution chain
+
+## ⚡ Example Flow
 ```python
 def provide_registry() -> Registry:
     registry = Registry()
@@ -108,23 +107,31 @@ def provide_registry() -> Registry:
 
     return registry
 
-# Execution sequence for AddPost request:
-# 1. RequestLoggingBehavior
-# 2. ValidationBehavior
-# 3. MetricsBehavior
-# 4. Actual AddPost handler
+# 🔄 Execution sequence:
+# 1️⃣ RequestLoggingBehavior
+# 2️⃣ ValidationBehavior
+# 3️⃣ MetricsBehavior
+# 4️⃣ Actual AddPost handler
 ```
 
-Add to your IoC Container:
+## 🔧 IoC Container Setup
 ```python
-# ...
+# Add to your container
 container.register(Registry, provide_registry)
-# ...
 ```
 
-### Benefits of Pipeline Behaviors
-Pipeline behaviors solve several common issues:
-- Centralize cross-cutting concerns
-- Keep handlers focused on business logic
-- Enable flexible behavior execution order
-- Eliminate code duplication in validation and response modification
+## 💡 Pro Tips
+- 🎯 Keep behaviors focused on single responsibilities
+
+- 🔍 Use behaviors for cross-cutting concerns
+
+- 📊 Consider adding monitoring in behaviors
+
+- 🛡️ Implement error handling where appropriate
+
+<details>
+<summary>📚 Original Documentation</summary>
+    <span style="font-size: 1.3em">
+        Pipeline behaviors in Bazario enable pre- and post-processing logic for requests and notifications. These behaviors form a chain around the core handler logic and can modify or enhance the data flow.
+    </span>
+</details>
