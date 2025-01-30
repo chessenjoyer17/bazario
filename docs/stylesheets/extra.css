@@ -1,0 +1,140 @@
+
+  
+  .md-search__form {
+    background-color: rgba(0, 0, 0, 0.26);
+    border-radius: 8px;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+  }
+  
+  .md-search__form:hover {
+    background-color: rgba(0, 0, 0, 0.3);
+  }
+  
+  /* Search Modal Popup */
+  .md-search__modal {
+    background-color: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(8px);
+  }
+  
+  .md-search__output {
+    border-radius: 8px;
+    margin-top: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  }
+  
+  /* Search Results */
+  .md-search-result__item {
+    padding: 1rem;
+    margin: 0.5rem 0;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    background: rgba(0, 0, 0, 0.1);
+  }
+  
+  .md-search-result__item:hover {
+    background: rgba(var(--md-primary-fg-color--light), 0.1);
+    transform: translateY(-2px);
+    border-color: rgba(var(--md-primary-fg-color--light), 0.2);
+  }
+  
+  /* Animation for search results */
+  @keyframes searchResult {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .md-search-result__item {
+    animation: searchResult 0.3s ease-out forwards;
+  }
+  
+  /* Custom scrollbar */
+  .md-search__scrollwrap::-webkit-scrollbar {
+    width: 5px;
+  }
+  
+  .md-search__scrollwrap::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+  }
+  
+  .md-search__scrollwrap::-webkit-scrollbar-thumb {
+    background: var(--md-primary-fg-color);
+    border-radius: 10px;
+  }
+  
+  /* Empty state styling */
+  .md-search-result__empty {
+    padding: 2rem;
+    text-align: center;
+    color: var(--md-default-fg-color--light);
+  }
+  
+  .md-search-result__empty::before {
+    content: "🔍";
+    font-size: 2rem;
+    display: block;
+    margin-bottom: 1rem;
+  }
+  
+  /* Search overlay animation */
+  .md-search__overlay {
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+    animation: overlay 0.3s ease-out forwards;
+  }
+  
+  @keyframes overlay {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+
+/* Card animations */
+.grid.cards > ul > li {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.grid.cards > ul > li:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Icon animations */
+.middle {
+    transition: transform 0.3s ease;
+}
+
+.cards li:hover .middle {
+    transform: scale(1.2);
+}
+
+/* Feature cards styling */
+.grid.cards > ul > li {
+    border-radius: 20px;
+    border: 2px solid var(--md-default-fg-color--lightest);
+    background: var(--md-default-bg-color);
+}
+
+/* Note block animation */
+.md-typeset .admonition {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.md-typeset .admonition:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+
