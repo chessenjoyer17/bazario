@@ -67,8 +67,8 @@ markdown_extensions:
   - attr_list
   - md_in_html
   - pymdownx.emoji:
-      emoji_index: !!python/name:materialx.emoji.twemoji
-      emoji_generator: !!python/name:materialx.emoji.to_svg
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
   - attr_list
   - md_in_html
   - def_list
@@ -91,14 +91,14 @@ nav:
   - Usage:
       - Requests and handles: usage/requests_and_handlers.md
       - Notifications and handlers: usage/notifications_and_handlers.md
-      - Pipeline Behabiours: usage/pipelines.md
+      - Pipeline Behaviors: usage/pipelines.md
       - Resolvers:
           - Resolvers in bazario: usage/resolvers_in_bazario.md
           - Dishka resolver: usage/dishka_resolver.md
           - Punq resolver: usage/punq_resolver.md
   - Contributing:
       - Development: contributing/development.md
-      - Guidelines: contributing/guideliness.md
+      - Guidelines: contributing/guidelines.md
 
 plugins:
   - search

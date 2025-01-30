@@ -72,13 +72,3 @@ def controller(sender: Sender) -> None:
     post_id = sender.send(request)
     print(f"Post with ID {post_id} was added ✨")
 ```
-<details>
-<summary>📚 Original Documentation (Click to expand)</summary>
-    <span style="font-size: 1.3em">
-        Requests in Bazario represent actions that return a result. They are used to perform operations that require a return value, such as creating, reading, or updating data.
-
-        Request Handlers are responsible for processing requests and generating the corresponding results.
-
-        Rest of the original content...
-    </span>
-</details>

@@ -30,12 +30,12 @@
 
     - to install with dishka
     ```bash
-    pip install bazario[dishka]
+    pip install 'bazario[dishka]'
     ```
 
     - to install with punq
     ```bash
-    pip install bazario[punq]
+    pip install 'bazario[punq]'
     ```
 
 ---
@@ -43,18 +43,18 @@
 ## 🔧 Requirements
 
 !!! info "System Requirements"
-    - Python 3.8 or higher
-    - pip 20.0 or higher
+    - Python 3.10 or higher
+    - pip 24.0 or higher
     - Virtual environment (recommended)
 
 ??? abstract "Supported Python Versions"
     | Version | Status |
     |---------|--------|
-    | 3.11    | ✅     |
-    | 3.10    | ✅     |
-    | 3.9     | ✅     |
-    | 3.8     | ✅     |
-    | < 3.8   | ❌     |
+    | 3.13    | ✅     |
+    | 3.12    | ✅     |
+    | 3.11     | ✅     |
+    | 3.10     | ✅     |
+    | < 3.10   | ❌     |
 
 ---
 
@@ -69,7 +69,7 @@
 
 !!! success "Expected Output"
     ```
-    Bazario version: 1.0.0
+    Bazario version: 0.4.1
     ```
 
 ---

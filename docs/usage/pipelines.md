@@ -25,7 +25,7 @@ class AuthenticationCheckBehavior(PipelineBehavior[Request, Any]):
     def handle(self, request: Request, handle_next: HandleNext[Request, Any]) -> Any:
         # ✨ Security check
         if not self._user_provider.is_authenticated():
-            raise PermissionError("User is not authenticated.")
+            raise AuthenticationError("User is not authenticated.")
         
         # 🔄 Continue to next handler
         return handle_next(request)
@@ -102,8 +102,8 @@ def provide_registry() -> Registry:
 def provide_registry() -> Registry:
     registry = Registry()
     
-    registry.add_behaviors(Request, RequestLoggingBehavior)
-    registry.add_behaviors(AddPost, ValidationBehavior, MetricsBehavior)
+    registry.add_pipeline_behaviors(Request, RequestLoggingBehavior)
+    registry.add_pipeline_behaviors(AddPost, ValidationBehavior, MetricsBehavior)
 
     return registry
 
@@ -128,10 +128,3 @@ container.register(Registry, provide_registry)
 - 📊 Consider adding monitoring in behaviors
 
 - 🛡️ Implement error handling where appropriate
-
-<details>
-<summary>📚 Original Documentation</summary>
-    <span style="font-size: 1.3em">
-        Pipeline behaviors in Bazario enable pre- and post-processing logic for requests and notifications. These behaviors form a chain around the core handler logic and can modify or enhance the data flow.
-    </span>
-</details>
