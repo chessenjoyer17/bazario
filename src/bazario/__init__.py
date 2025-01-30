@@ -20,3 +20,5 @@ __all__ = (
     "Resolver",
     "Sender",
 )
+
+__version__ = "0.4.2"
